@@ -1,0 +1,30 @@
+to handle one single page to 'fake' it like having other pages we can use ng-route. 
+First we need to put to the script and add the dependency to the module:
+
+        <script src="//code.angularjs.org/1.3.0-rc.1/angular-route.min.js"></script>
+		in App.js
+		var myApp = angular.module('myApp', ['ngRoute']);
+
+Next we need to configure the route: 
+myApp.config(function ($routeProvider) {
+	............
+	...........
+	........
+
+and then to actually put the template in the index html
+we use another ng-view, example:
+	            <div ng-view></div>
+
+So all the template that come from the routing (myApp.config) will be place there..
+The major improvement is with this we don't need to reload our page. 
+We just need to seemlessly load our template. NEAT
+
+Now What if I want to give it a value. 
+I can put something like this, example:
+	'/weapon/:power'
+and I will get the value... from my controller
+there is also another router out there... 
+Why this is so popular?
+	First I can do lots of thing...
+	and this is really fast, Imagine, if I'm going to the second page I will need to download all over again.
+	
