@@ -97,6 +97,8 @@ myApp.directive("weaponListLimited", function() {
       //passing an object need to be a two way binding:
       //we need to set the custom directives first (create attribute.)
       weaponObject: "=",
+      //this allow us to use the function and in order to call the function we need to put it as an object for each parameter we pass, like below:
+      //<h1> {{weaponObject.name}} has length {{ weaponFunction({aWeapon: weaponObject})}} and total Power {{ weaponObject.getAttack()}} </h1>
       weaponFunction: "&"
 
     }
