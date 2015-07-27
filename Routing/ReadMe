@@ -27,4 +27,9 @@ there is also another router out there...
 Why this is so popular?
 	First I can do lots of thing...
 	and this is really fast, Imagine, if I'm going to the second page I will need to download all over again.
-	
+
+
+in angular there is another: factory and provider?
+Okay now lets talk about service in angular, service that I use here is similar to singleton.
+example of angular singleton is $log 
+In the module, we can create the service like this:
