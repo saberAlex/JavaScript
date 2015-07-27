@@ -28,6 +28,17 @@ myApp.controller('mainController', ['$scope', '$log', function($scope, $log) {
       "ultimaWeapon"
     ];
 
+      $scope.weaponObject = {
+        name: "oblivion",
+        power: 1000,
+        getAttack: function() {
+          return this.power;
+        }
+      }
+
+      $scope.getTotal = function (weaponObject){
+        return weaponObject.name.length;
+      }
     
     
 }]);
@@ -65,11 +76,30 @@ myApp.directive("weaponList", function() {
   }
 })
 
+//[001]
 myApp.directive("weaponListTemplate", function() {
   return {
     restrict: 'E',
     templateUrl: 'directives/direct.html',
     replace: true
   }
-})
+});
 
+//The approached we do in [001] is not particularly safe. Here we can polute/modify the variable in the scope... and there might be a case where we forget, this can cause problem when we do debugging. 
+//therefore we add another attribute to our directives called scope
+
+myApp.directive("weaponListLimited", function() {
+  return {
+    restrict: 'E', 
+    templateUrl: 'directives/directLimit.html',
+    replace: true,
+    scope: {
+      //passing an object need to be a two way binding:
+      //we need to set the custom directives first (create attribute.)
+      weaponObject: "=",
+      weaponFunction: "&"
+
+    }
+  }
+
+});
