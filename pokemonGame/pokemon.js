@@ -62,18 +62,61 @@ pokeFight.config(function($routeProvider){
 });
 
 
-pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService', function($scope, $log, pokedexService) {
+pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$interval', function($scope, $log, pokedexService, $interval) {
    
    $scope.currentFighter = pokedexService.currentFighter;
-   $scope.myHP = {
-   	'width': Math.round($scope.currentFighter.hp/10) + '%'
-   }
+   
+   $scope.myHP =  Math.round($scope.currentFighter.hp/10) + '%';
+   $scope.$watch('currentFighter.hp', function() {
+   	   $scope.myHP =  Math.round($scope.currentFighter.hp/10) + '%';
+   });
 
-    
+    $scope.currentFighter.answer = '';
+    $scope.counter = 0;
+
+
+
+    $scope.showModal = false;
+    $scope.toggleModal = function(){
+        $scope.showModal = !$scope.showModal;
+        if($scope.showModal) {
+    		var promise = $interval(function(){
+    			$scope.countDown--;
+    			if($scope.countDown < 1) {
+    				$interval.cancel(promise);
+    				$scope.showModal = false;
+    			}
+    		},1000,0);
+        $scope.currentFighter.answer = '';
+    	$scope.counter = 0;
+    	$scope.superAttackResult = 0;
+    	$scope.countDown = 10;
+    	}
+
+    };
+
+    //For the progress bar
+	$scope.charging = "0%";
+    $scope.$watch('counter', function() {
+    	  $scope.charging = $scope.counter*10 + '%';
+    });
+
+    $scope.plus1 = Math.floor((Math.random() * 15) + 1);
+	$scope.plus2 =  Math.floor((Math.random() * 15) + 1); 
+    $scope.submit = function() {
+    	var result = $scope.plus1 + $scope.plus2;
+    	if(result == parseInt($scope.currentFighter.answer) ) {
+    		$scope.counter++;
+    	}
+    	$scope.currentFighter.answer = '';
+        $scope.plus1 = Math.floor((Math.random() * 15) + 1);
+		$scope.plus2 =  Math.floor((Math.random() * 15) + 1); 	
+    }
+
 }]);
 
 
-pokeFight.controller('mainController', ['$scope', '$log', 'pokedexService', function($scope, $log, pokedexService) {
+pokeFight.controller('mainController', ['$scope', '$log', 'pokedexService',  function($scope, $log, pokedexService) {
 
      $scope.fighterList = pokedexService.fighterList;
      $scope.choose = function(poke) {
@@ -81,3 +124,40 @@ pokeFight.controller('mainController', ['$scope', '$log', 'pokedexService', func
      };
 
 }]);
+
+// pokeFight.controller('superCtrl', ['$scope','$modal', '$log', function($scope, $modal, $log){
+// $scope.ok = function () {
+//     $modalInstance.close($scope.selected.item);
+//   };
+
+// }]);
+
+pokeFight.directive('modal', function () {
+    return {
+      templateUrl: "directives/modalSuper.html",
+      restrict: 'E',
+      transclude: true,
+      replace:true,
+      link: function postLink(scope, element, attrs) {
+        scope.title = attrs.title;
+        scope.$watch(attrs.visible, function(value){
+          if(value == true)
+            $(element).modal('show');
+          else
+            $(element).modal('hide');
+        });
+
+        $(element).on('shown.bs.modal', function(){
+          scope.$apply(function(){
+            scope.$parent[attrs.visible] = true;
+          });
+        });
+
+        $(element).on('hidden.bs.modal', function(){
+          scope.$apply(function(){
+            scope.$parent[attrs.visible] = false;
+          });
+        });
+      }
+    };
+  });

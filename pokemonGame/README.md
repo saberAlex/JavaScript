@@ -21,3 +21,29 @@ This is a Google+ inspired responsive starter template for Bootstrap. The theme 
 To use, just place theme.css after your bootstrap 3 css. This and other Bootstrap templates are available at: http://bootply.com/templates
 
 
+
+		<!--about modal-->
+	<div ng-controller="superCtrl">
+	<script type="text/ng-template" id="super.html">
+
+			  <div class="modal-header">
+            <h3 class="modal-title">Im a modal</h3>
+        	</div>
+
+
+			  <div class="modal-body">
+						  <div class="progress">
+						<div class="progress-bar progress-bar-danger" style="width: 50%"></div>
+					  </div>
+					  <p>Number</p>
+					  <form>
+					  <input type="text" value="input answer"/>
+					</form>
+
+			  </div>
+
+			  <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">OK</button>
+        </div>
+    </script>
+	</div>

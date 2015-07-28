@@ -10,7 +10,7 @@
 					  <div class="list-group">
 						<a href="#" class="list-group-item">attack</a>
 						<a href="#" class="list-group-item">defense</a>
-						<a ng-href="aboutModal" role="button" data-toggle="modal" class="list-group-item">{{currentFighter.super}}</a>
+						<a ng-click="toggleModal()" role="button" class="list-group-item">{{currentFighter.super}}</a>
 					  </div>
 					</div>
 				</div>
@@ -36,7 +36,7 @@
 				   	<h4>{{currentFighter.name + ' hp'}}</h4></div>
 					<div class="panel-body">
 					  <div class="progress">
-						<div class="progress-bar progress-bar-success" ng-style="{{myHP}}"></div>
+						<div class="progress-bar progress-bar-success" ng-style="{'width': myHP}"></div>
 					  </div>
 					  
 					</div>
@@ -69,7 +69,7 @@
 				 </div>
 	<div class="well"> 
 					 <form class="form-horizontal" role="form">
-					  <h4>say hi to your pokemon</h4>
+					  <h4>{{'say hi to your ' + currentFighter.name}}</h4>
 					   <div class="form-group" id="formSayHi">
 						<textarea class="form-control" placeholder="Update your status"></textarea>
 						<hr>
@@ -87,31 +87,14 @@
 			
 		</div><!--/main-->
 
+  <modal title="charge!" visible="showModal">
+  						  <div class="progress">
+<div class="progress-bar progress-bar-info" ng-style="{'width': charging}"></div> </div>
+<h2>{{plus1 + '+' + plus2}}</h2>
+<form ng-submit="submit()">
+<input type="text" ng-model="currentFighter.answer"/>
+</form>
 
-		<!--about modal-->
-		<div id="aboutModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-		  <div class="modal-dialog">
-
-		  <div class="modal-content">
-			  <div class="modal-header">
-				  <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-				  <h2 class="text-center">fill the gauge </h2>
-			  </div>
-			  <div class="modal-body">
-						  <div class="progress">
-						<div class="progress-bar progress-bar-danger" style="width: 50%"></div>
-					  </div>
-					  <p>Number</p>
-					  <form>
-					  <input type="text" value="input answer"/>
-					</form>
-
-			  </div>
-			  <div class="modal-footer">
-				  <button class="btn" data-dismiss="modal" aria-hidden="true">OK</button>
-			  </div>
-		  </div>
+  </modal>
 
 
-		  </div>
-		</div>
