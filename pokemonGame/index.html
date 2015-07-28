@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="pokeFight">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
+        <meta charset="utf-8">
+        <title>Pokemon Fighter - pokeFight (Beta) V 1.0</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/theme.css" rel="stylesheet">        		
+		<link href="css/style.css" rel="stylesheet">
+        <!-- load angular via CDN -->
+        <script src="//code.angularjs.org/1.3.0-rc.1/angular.min.js"></script>
+        <script src="//code.angularjs.org/1.3.0-rc.1/angular-route.min.js"></script>
+        <script src="pokemon.js"></script>
+
+    </head>
+    
+    <body >
+        
+		<div class="navbar navbar-fixed-top header">
+		<div class="col-md-12">
+				<div class="collapse navbar-collapse" id="navbar-collapse2">
+				<a href="#" class="navbar-brand">pokefight</a>
+				  <ul class="nav navbar-nav navbar-right">
+					 <li class="active"><a href="#">Posts</a></li>
+					 <li><a href="#loginModal" role="button" data-toggle="modal">Login</a></li>
+					 <li><a href="#aboutModal" role="button" data-toggle="modal">About</a></li>
+				   </ul>
+				</div>	
+		 </div>	
+		</div>
+
+		<div class="navbar navbar-default" id="subnav" style="background-color: #0033CC";>	
+			<br>
+			<p style="color: #FFFFFF;">Pokemon Fighter Beta Version 1.0</p>
+		</div>
+
+		<!--main-->
+		<div class="container" id="main">
+		
+		   <div class="row">
+		   <div class="col-md-4 col-sm-6">
+				<div class="panel panel-default">
+				  <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>ability</h4></div>
+					<div class="panel-body">
+					  <div class="list-group">
+						<a href="http://bootply.com/tagged/modal" class="list-group-item">attack</a>
+						<a href="http://bootply.com/tagged/datetime" class="list-group-item">defense</a>
+						<a href="#aboutModal" role="button" data-toggle="modal" class="list-group-item">super attack</a>
+					  </div>
+					</div>
+				</div>
+
+					<div class="panel panel-default">
+				  <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>enemy</h4></div>
+					<div class="panel-body">
+					  <div class="list-group">
+						<a href="http://bootply.com/tagged/bootstrap-3" class="list-group-item active">name</a>
+						<a href="http://bootply.com/tagged/snippets" class="list-group-item">status</a>
+						<a href="http://bootply.com/tagged/example" class="list-group-item">info</a>
+					  </div>
+					</div>
+				</div>
+			 
+			
+
+			</div>
+		   <div class="col-md-4 col-sm-6">
+				 
+
+				 <div class="panel panel-default">
+				   <div class="panel-heading"><a href="#" class="pull-right">View all</a> 
+				   	<h4>pokemon status</h4></div>
+					<div class="panel-body">
+					  <div class="progress">
+						<div class="progress-bar progress-bar-danger" style="width: 50%"></div>
+					  </div>
+					  
+					</div>
+				 </div>
+
+
+				<div class="panel panel-default">
+				  <div class="panel-thumbnail"><img id='poke-image' src="img/pokemon/charmander/charmander.png" class="img-responsive" ></div>
+				  <div class="panel-body">
+					<p class="lead">charmander</p>
+					<p>hello there master</p>
+					
+					<p>
+					
+				  </div>
+
+			</div>
+
+			<div class="col-sm-4 col-xs-6">
+			  
+				</div>
+
+			  
+			  </div><!--/col-->
+			<div class="col-md-4 col-sm-6">
+				
+				<div class="panel panel-default">
+				   <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>charmander pokedex</h4></div>
+					<div class="panel-body">
+					  <img src="img/pokemon/charmander/charmander-tackle.gif"/> 
+					  <hr>			  
+					  <p>The flame on its tail indicates CHARMANDER’s life force. If it is healthy, the flame burns brightly.</p>
+					</div>
+				 </div>
+	<div class="well"> 
+					 <form class="form-horizontal" role="form">
+					  <h4>say hi to your pokemon</h4>
+					   <div class="form-group" id="formSayHi">
+						<textarea class="form-control" placeholder="Update your status"></textarea>
+						<hr>
+						<button class="btn btn-success pull-right" type="button">Post</button>
+
+					  </div>
+					  
+					</form>
+				</div>
+						  
+			</div>
+		  </div><!--/row-->
+			</div>
+		  
+			
+		</div><!--/main-->
+
+
+		<!--about modal-->
+		<div id="aboutModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+		  <div class="modal-dialog">
+
+		  <div class="modal-content">
+			  <div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+				  <h2 class="text-center">fill the gauge </h2>
+			  </div>
+			  <div class="modal-body">
+						  <div class="progress">
+						<div class="progress-bar progress-bar-danger" style="width: 50%"></div>
+					  </div>
+					  <p>Number</p>
+					  <form>
+					  <input type="text" value="input answer"/>
+					</form>
+
+			  </div>
+			  <div class="modal-footer">
+				  <button class="btn" data-dismiss="modal" aria-hidden="true">OK</button>
+			  </div>
+		  </div>
+
+
+		  </div>
+		</div>
+
+        
+        <script type='text/javascript' src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type='text/javascript' src="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>        
+    </body>
+</html>
