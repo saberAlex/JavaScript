@@ -1,5 +1,15 @@
-var pokemon = [
-{
+var pokeFight = angular.module('pokeFight',['ngRoute']);
+
+pokeFight.service('pokedexService', function() {
+    var self = this;
+
+    this.fighterList = [
+    	"charmander",
+    	"pikachu"
+    ],
+
+this.fighter =  {
+charmander: {
 	name: "charmander",
 	info: "The flame on its tail indicates CHARMANDERs life force. If it is healthy, the flame burns brightly.",
 	photo: "img/pokemon/charmander/charmander.png",
@@ -14,7 +24,7 @@ var pokemon = [
 	power: 150,
 	superPower: 400
 }, 
-{
+pikachu: {
 	name: "pikachu",
 	info: "PIKACHU stores electricity in the electric sacs on its cheeks. When it releases pent-up energy in a burst, the electric power is equal to a lightning bolt.",
 	photo: "img/pokemon/pikachu/pikachu.png",
@@ -24,22 +34,50 @@ var pokemon = [
 	def: "img/pokemon/pikachu/pikachu-defense.gif",
 	superAttack: "img/pokemon/pikachu/pikachu-super.gif",
 	super: "thunder-bold",
-	hp: 1000,
+	hp: 900,
 	defense:80,
 	power: 130,
 	superPower: 300
 
 }
 
-];
+};
 
-var pokeFight = angular.module('pokeFight',['ngRoute']);
-
-pokeFight.config( function($routeProvider){
+    this.currentFighter = this.fighter.charmander;
 
 });
 
-pokeFight.controller=('battleController', ['$scope','$log', function($scope, $log){
+pokeFight.config(function($routeProvider){
+	$routeProvider
 
+    .when('/', {
+        templateUrl: 'pages/main.html',
+        controller: 'mainController'
+    })
+	.when('/battle', {
+		templateUrl: 'pages/battle.html',
+		controller: 'battleController'
+	})
+
+});
+
+
+pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService', function($scope, $log, pokedexService) {
+   
+   $scope.currentFighter = pokedexService.currentFighter;
+   $scope.myHP = {
+   	'width': Math.round($scope.currentFighter.hp/10) + '%'
+   }
+
+    
+}]);
+
+
+pokeFight.controller('mainController', ['$scope', '$log', 'pokedexService', function($scope, $log, pokedexService) {
+
+     $scope.fighterList = pokedexService.fighterList;
+     $scope.choose = function(poke) {
+     	pokedexService.currentFighter = pokedexService.fighter[poke];
+     };
 
 }]);

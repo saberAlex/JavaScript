@@ -1,0 +1,117 @@
+	<!--main-->
+		<div class="container" id="main">
+		
+		   <div class="row">
+		   <div class="col-md-4 col-sm-6">
+
+				<div class="panel panel-default">
+				  <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>ability</h4></div>
+					<div class="panel-body">
+					  <div class="list-group">
+						<a href="#" class="list-group-item">attack</a>
+						<a href="#" class="list-group-item">defense</a>
+						<a ng-href="aboutModal" role="button" data-toggle="modal" class="list-group-item">{{currentFighter.super}}</a>
+					  </div>
+					</div>
+				</div>
+
+					<div class="panel panel-default">
+				  <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>enemy</h4></div>
+					<div class="panel-body">
+					  <div class="list-group">
+						<a href="#" class="list-group-item active">name</a>
+						<a href="#" class="list-group-item">status</a>
+						<a href="#" class="list-group-item">info</a>
+					  </div>
+					</div>
+				</div>
+			</div>
+
+
+		   <div class="col-md-4 col-sm-6">
+				 
+
+				 <div class="panel panel-default">
+				   <div class="panel-heading"><a href="#" class="pull-right">View all</a> 
+				   	<h4>{{currentFighter.name + ' hp'}}</h4></div>
+					<div class="panel-body">
+					  <div class="progress">
+						<div class="progress-bar progress-bar-success" ng-style="{{myHP}}"></div>
+					  </div>
+					  
+					</div>
+				 </div>
+
+
+				<div class="panel panel-default">
+				  <div class="panel-thumbnail"><img id='poke-image' ng-src="{{currentFighter.photo}}" class="img-responsive" ></div>
+				  <div class="panel-body">
+					<p class="lead">{{currentFighter.name}}</p>
+					<p>hello there master</p>
+					
+					<p>
+					
+				  </div>
+
+			</div>
+ </div><!--/col-->
+
+
+			<div class="col-md-4 col-sm-6">
+				
+				<div class="panel panel-default">
+				   <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>{{pokemon.name + 'pokedex'}}</h4></div>
+					<div class="panel-body">
+					  <img ng-src="{{currentFighter.attack}}"/> 
+					  <hr>			  
+					  <p>{{currentFighter.info}}</p>
+					</div>
+				 </div>
+	<div class="well"> 
+					 <form class="form-horizontal" role="form">
+					  <h4>say hi to your pokemon</h4>
+					   <div class="form-group" id="formSayHi">
+						<textarea class="form-control" placeholder="Update your status"></textarea>
+						<hr>
+						<button class="btn btn-success pull-right" type="button">send</button>
+
+					  </div>
+					  
+					</form>
+				</div>
+						  
+			</div>
+
+
+		  </div><!--/row-->		  
+			
+		</div><!--/main-->
+
+
+		<!--about modal-->
+		<div id="aboutModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+		  <div class="modal-dialog">
+
+		  <div class="modal-content">
+			  <div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+				  <h2 class="text-center">fill the gauge </h2>
+			  </div>
+			  <div class="modal-body">
+						  <div class="progress">
+						<div class="progress-bar progress-bar-danger" style="width: 50%"></div>
+					  </div>
+					  <p>Number</p>
+					  <form>
+					  <input type="text" value="input answer"/>
+					</form>
+
+			  </div>
+			  <div class="modal-footer">
+				  <button class="btn" data-dismiss="modal" aria-hidden="true">OK</button>
+			  </div>
+		  </div>
+
+
+		  </div>
+		</div>
