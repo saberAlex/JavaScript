@@ -43,8 +43,17 @@ pikachu: {
 
 };
 
-    this.currentFighter = this.fighter.charmander;
 
+    this.currentFighter = this.fighter.charmander;
+    this.dummyOpponent = {
+      name: 'Moogle',
+      photo: 'img/moogle/moogle.png',
+      info: 'These mysterious beings tend to flock around humans, closer to man than beast. They communicate via their network Mognet and their distinctive cry of "Kupo!" and fluffy appearance endear them to all.',
+      hp: 1000,
+      defense: 90,
+      power: 90,
+      superPower: 350
+    }
 });
 
 pokeFight.config(function($routeProvider){
@@ -62,19 +71,83 @@ pokeFight.config(function($routeProvider){
 });
 
 
-pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$interval', function($scope, $log, pokedexService, $interval) {
+pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$interval', '$timeout', function($scope, $log, pokedexService, $interval, $timeout) {
    
    $scope.currentFighter = pokedexService.currentFighter;
-   
+   $scope.enemy = pokedexService.dummyOpponent;
+   $scope.showGameOver = false;
    $scope.myHP =  Math.round($scope.currentFighter.hp/10) + '%';
    $scope.$watch('currentFighter.hp', function() {
    	   $scope.myHP =  Math.round($scope.currentFighter.hp/10) + '%';
+       if($scope.currentFighter.hp < 1) {
+          $scope.showGameOver = true;
+       }
    });
 
     $scope.currentFighter.answer = '';
     $scope.counter = 0;
 
 
+    $scope.showNormalModal = false;
+    $scope.toggleNormalModal = function() {
+      $scope.showNormalModal = !$scope.showNormalModal;
+      //simulating an opponent attack:
+      $timeout( function() {
+         $scope.currentFighter.currentAttack = $scope.currentFighter.power;
+        $scope.currentFighter.currentDefense = 0;
+        $scope.enemyAttack();
+        $scope.currentFighter.hp = $scope.currentFighter.hp - $scope.enemy.currentAttack + $scope.currentFighter.currentDefense;
+        $scope.enemy.hp = $scope.enemy.hp - $scope.currentFighter.currentAttack + $scope.enemy.currentDefense;
+              $scope.showNormalModal = !$scope.showNormalModal;
+      }, 3000);
+
+       }
+
+    $scope.showDefenseModal = false;
+    $scope.toggleDefenseModal = function() {
+      $scope.showDefenseModal = !$scope.showDefenseModal;
+
+      $timeout( function() {
+        $scope.currentFighter.currentAttack = $scope.currentFighter.power;
+        $scope.currentFighter.currentDefense = 0;
+        $scope.enemyAttack();
+        $scope.currentFighter.hp = $scope.currentFighter.hp - $scope.enemy.currentAttack + $scope.currentFighter.currentDefense;
+        $scope.enemy.hp = $scope.enemy.hp - $scope.currentFighter.currentAttack + $scope.enemy.currentDefense;
+        $scope.showDefenseModal = !$scope.showDefenseModal;
+      }, 3000);
+
+       }
+    
+
+    $scope.showOpponent = false;
+    $scope.toggleEnemyModal = function() {
+      $scope.showOpponent = !$scope.showOpponent;
+    }
+
+    $scope.currentFighter.currentAttack = 0;
+    $scope.currentFighter.currentDefense = 0;
+
+    $scope.enemy.currentAttack = 0;
+    $scope.enemy.currentDefense = 0;
+    $scope.enemyAttack = function() {
+        var chooseAttack = $scope.getRandomInt(1,4);
+        if(chooseAttack == 1) {
+          $scope.enemy.currentAttack = $scope.enemy.power;
+          $scope.enemy.currentDefense = 0;
+        } else if( chooseAttack == 2) {
+          $scope.enemy.currentAttack = 0;
+          $scope.enemy.currentDefense = $scope.enemy.defense*2;
+        } else {
+          $scope.enemy.currentAttack = $scope.getRandomInt(40,$scope.enemy.superPower);
+          $scope.enemy.currentDefense = 0;
+        }
+    }
+
+
+    //get random value, from min(included) to max(excluded)
+    $scope.getRandomInt = function(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
 
     $scope.showModal = false;
     $scope.toggleModal = function(){
@@ -83,7 +156,16 @@ pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$i
     		var promise = $interval(function(){
     			$scope.countDown--;
     			if($scope.countDown < 1) {
-    				$interval.cancel(promise);
+
+        $timeout( function() {
+        $scope.currentFighter.currentAttack = $scope.currentFighter.superPower*$scope.counter/10;
+        $scope.currentFighter.currentDefense = 0;
+        $scope.enemyAttack();
+        $scope.currentFighter.hp = $scope.currentFighter.hp - $scope.enemy.currentAttack + $scope.currentFighter.currentDefense;
+        $scope.enemy.hp = $scope.enemy.hp - $scope.currentFighter.currentAttack + $scope.enemy.currentDefense;
+      }, 3000);
+
+            $interval.cancel(promise);
     				$scope.showModal = false;
     			}
     		},1000,0);
@@ -119,18 +201,14 @@ pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$i
 pokeFight.controller('mainController', ['$scope', '$log', 'pokedexService',  function($scope, $log, pokedexService) {
 
      $scope.fighterList = pokedexService.fighterList;
+     for(var i = 0; i < $scope.fighterList.length; i++) {
+
+     }
      $scope.choose = function(poke) {
      	pokedexService.currentFighter = pokedexService.fighter[poke];
      };
 
 }]);
-
-// pokeFight.controller('superCtrl', ['$scope','$modal', '$log', function($scope, $modal, $log){
-// $scope.ok = function () {
-//     $modalInstance.close($scope.selected.item);
-//   };
-
-// }]);
 
 pokeFight.directive('modal', function () {
     return {
@@ -161,3 +239,129 @@ pokeFight.directive('modal', function () {
       }
     };
   });
+
+pokeFight.directive('normalAttackModal', function() {
+ return {
+  templateUrl: "directives/normalAttack.html",
+  restrict: 'E',
+  transclude: true,
+  replace: true,
+  link: function postLink(scope, element, attrs) {
+    scope.title = attrs.title;
+    scope.$watch(attrs.visible, function(value) {
+      if(value == true) {
+        $(element).modal('show');
+      } else {
+        $(element).modal('hide');
+      }
+    });
+
+    $(element).on('shown.bs.normalAttackModal', function(){
+      scope.$apply(function() {
+        scope.$parent[attrs.visible] = true;
+      });
+    });
+
+    $(element).on('hidden.bs.normalAttackModal', function() {
+      scope.$apply(function() {
+        scope.$parent[attrs.visible] = false;
+      });
+    });
+  }
+
+ };
+});
+
+pokeFight.directive('defenseModal', function() {
+  return {
+    templateUrl: "directives/modalDefense.html",
+    restrict: 'E',
+    transclude: true,
+    replace: true, 
+    link: function postLink(scope, element, attrs) {
+      scope.title = attrs.title;
+      scope.$watch(attrs.visible, function(value) {
+        if(value == true) {
+          $(element).modal('show');
+        } else {
+          $(element).modal('hide');
+        }
+      });
+
+      $(element).on('shown.bs.defenseModal', function() {
+        scope.$apply( function() {
+          scope.$parent[attrs.visible] = true;
+        });
+      });
+
+      $(element).on('hidden.bs.defenseModal', function() {
+        scope.$apply( function() {
+          scope.$parent[attrs.visible] = false;
+        })
+      })
+
+
+    }
+  };
+});
+
+pokeFight.directive('enemyModal', function() {
+  return {
+    templateUrl: "directives/modalDefense.html",
+    restrict:'E',
+    transclude: true,
+    replace: true,
+    link: function postLink(scope, element, attrs) {
+      scope.title = attrs.title;
+      scope.$watch(attrs.visible, function(value) {
+        if(value == true) {
+          $(element).modal('show');
+        } else {
+          $(element).modal('hide');
+        }
+      });
+      $(element).on('shown.bs.enemyModal', function() {
+        scope.$apply( function() {
+          scope.$parent[attrs.visible] = true;
+        });
+      });
+      $(element).on('hidden.bs.enemyModal', function() {
+        scope.$apply( function() {
+          scope.$parent[attrs.visible] = false;
+        })
+      })
+
+    }
+  }
+});
+
+pokeFight.directive('gameOver', function() {
+  return {
+    templateUrl: "directives/modalDefense.html",
+    restrict:'E',
+    transclude: true,
+    replace: true,
+    link: function postLink(scope, element, attrs) {
+      scope.title = attrs.title;
+      scope.$watch(attrs.visible, function(value) {
+        if(value == true) {
+          $(element).modal('show');
+        } else {
+          $(element).modal('hide');
+        }
+      });
+
+      $(element).on('shown.bs.gameOver', function() {
+        scope.$apply(function() {
+          scope.$parent[attrs.visible] = true;
+        });
+      });
+      $(element).on('hidden.bs.gameOver', function() {
+        scope.$apply(function() {
+          scope.$parent[attrs.visible] = false;
+        });
+      });
+
+    }
+  }
+})

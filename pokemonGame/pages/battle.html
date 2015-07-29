@@ -7,10 +7,10 @@
 				<div class="panel panel-default">
 				  <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>ability</h4></div>
 					<div class="panel-body">
-					  <div class="list-group">
-						<a href="#" class="list-group-item">attack</a>
-						<a href="#" class="list-group-item">defense</a>
-						<a ng-click="toggleModal()" role="button" class="list-group-item">{{currentFighter.super}}</a>
+					  <div class="list-group" id="ability">
+						<a ng-click="toggleNormalModal()" class="btn btn-primary btn-block" class="list-group-item">attack</a>
+						<a ng-click="toggleDefenseModal()"class="btn btn-warning btn-block" class="list-group-item">defense</a>
+						<a ng-click="toggleModal()" class="btn btn-danger btn-block" class="list-group-item">{{currentFighter.super}}</a>
 					  </div>
 					</div>
 				</div>
@@ -19,9 +19,9 @@
 				  <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>enemy</h4></div>
 					<div class="panel-body">
 					  <div class="list-group">
-						<a href="#" class="list-group-item active">name</a>
-						<a href="#" class="list-group-item">status</a>
-						<a href="#" class="list-group-item">info</a>
+						<a href="" class="list-group-item active">{{enemy.name}}</a>
+						<a ng-click="toggleEnemyModal()" class="btn btn-success btn-block" class="list-group-item">status</a>
+						<a href="" class="list-group-item">info</a>
 					  </div>
 					</div>
 				</div>
@@ -44,7 +44,7 @@
 
 
 				<div class="panel panel-default">
-				  <div class="panel-thumbnail"><img id='poke-image' ng-src="{{currentFighter.photo}}" class="img-responsive" ></div>
+				  <div class="panel-thumbnail"><img id='poke-image' ng-src="{{currentFighter.photo}}" class="img-responsive displaedModal" ></div>
 				  <div class="panel-body">
 					<p class="lead">{{currentFighter.name}}</p>
 					<p>hello there master</p>
@@ -62,7 +62,7 @@
 				<div class="panel panel-default">
 				   <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>{{pokemon.name + 'pokedex'}}</h4></div>
 					<div class="panel-body">
-					  <img ng-src="{{currentFighter.attack}}"/> 
+					  <img ng-src="{{currentFighter.normal}}"/> 
 					  <hr>			  
 					  <p>{{currentFighter.info}}</p>
 					</div>
@@ -88,7 +88,10 @@
 		</div><!--/main-->
 
   <modal title="charge!" visible="showModal">
-  						  <div class="progress">
+  	  	<img id='poke-image' ng-src="{{currentFighter.superAttack}}" class="img-responsive displayedModal" />
+    	<h2 ng-style="{'color': 'red'}" >{{currentFighter.superPower * counter /10}}</h2>
+
+  <div class="progress">
 <div class="progress-bar progress-bar-info" ng-style="{'width': charging}"></div> </div>
 <h2>{{plus1 + '+' + plus2}}</h2>
 <form ng-submit="submit()">
@@ -98,3 +101,29 @@
   </modal>
 
 
+  <normal-attack-modal title="{{currentFighter.name + ' uses tackle'}}" visible="showNormalModal"> 
+    	<h2 ng-style="{'color': 'red'}" >{{currentFighter.power}}</h2>
+
+  	<img src="img/bar.gif"/>
+  	<img id='poke-image' ng-src="{{currentFighter.attack}}" class="img-responsive displayedModal" />
+
+
+  </normal-attack-modal>
+
+  <defense-modal title="{{currentFighter.name + ' defenses'}}" visible="showDefenseModal">
+  	<h2 ng-style="{'color': 'blue'}" >{{currentFighter.defense * 2}}</h2>
+  	<img src="img/bar.gif"/>
+  	<img id='poke-image' ng-src="{{currentFighter.def}}" class="img-responsive displayedModal" />
+
+</defense-modal>
+
+	<enemy-modal title="Opponent status" visible="showOpponent">
+	 <img id='enemy-image' ng-src="{{enemy.photo}}" class="img-responsive displayedModal" />
+	<br>
+	<h3>{{'HP: ' + enemy.hp}}</h3>
+	<br>
+	 </enemy-modal>
+
+<game-over title="Game Over" visible="showGameOver">
+	<h2> Game Over </h2>
+</game-over> 
