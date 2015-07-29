@@ -9,7 +9,6 @@ module.exports = function(passport, FacebookStrategy, config, mongoose) {
 	var userModel = mongoose.model('chatUser', chatUser);
 
 	passport.serializeUser(function(user, done) {
-		//user/id is the id of mongo lab.
 		done(null, user.id);
 	});
 

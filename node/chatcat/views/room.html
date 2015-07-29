@@ -14,23 +14,32 @@
 		var userName = '{{user.fullname}}';
 		var userPic = '{{user.profilePic}}';
 
+		//as soon as it connect back and create a web socket:
 		messages.on('connect', function(){
 			console.log('Connection Established !!');
 			messages.emit('joinroom', {room:roomNum, user:userName, userPic:userPic})
 		})
 
+		//listening for keyup in  the input field: .newMessage
 		$(document).on('keyup', '.newmessage', function(e){
+			//13 is represent key enter -- > this is when we want to broadcast
+			//2nd condition input field should not be empty
 			if(e.which === 13 && $(this).val()!=''){
+				//here we are emitting a new message:
+				//remember message is: 		var messages = io.connect(host + '/messages');
 				messages.emit('newMessage', {
 					room_number:roomNum,
 					user:userName,
 					userPic:userPic,
 					message:$(this).val()
 				})
+				//this is simple a local function that will enter the message feed 
 				updateMessageFeed(userPic, $(this).val());
 				$(this).val('');
 			}
 		})
+		//where do we actually ask for message feed?
+		//the message.. is in socket.js
 
 		messages.on('messagefeed', function(data){
 			var msgs = JSON.parse(data);
@@ -38,12 +47,14 @@
 		})
 
 		function updateMessageFeed(userPic, message){
+			//this is just a template that we need to render. 
 			var str = '<li>';
 				str += '<div class="msgbox">';
 				str +=	'<div class="pic"><img src="' + userPic + '"></div>';
 				str +=	'<div class="msg"><p>' + message + '</p></div>';
 				str +=	'</div>';
 				str += '</li>';
+				//this is we inserted into the dom. 
 			$(str).hide().prependTo($('.messages')).slideDown(100);
 		}
 

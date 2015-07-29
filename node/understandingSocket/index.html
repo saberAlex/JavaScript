@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+	<title> Socket.io chat </title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+</head>
+<body>
+	<div class='container'>
+		<form action = "">
+			<input id='m' autocomplete='off'/>
+			<button> Send </button>
+		</form>
+		<ul id= "messages"> </ul>
+	</div>
+		<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+		<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+	<script>
+		var socket = io();
+		$('form').submit(function() {
+			//we emitting the message once we click submit
+			//and we set the emit value back to ''
+			socket.emit('chat message', $('#m').val());
+			$('#m').val('');
+			return false;
+		});
+
+		socket.on('chat message', function(msg) {
+			//append the ul with the 'chat message emitted from the server'
+			$('#messages').append($('<li>').text(msg));
+		});
+
+		//that is all to load the socket.io-client, which exposes a io global, and then connect.
+		//No url specified because it defaulted to try to connect to the host.
+	</script>
+</body>
+</html>
