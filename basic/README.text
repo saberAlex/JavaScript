@@ -1,0 +1,18 @@
+there are different kind of API for google map, 
+google map javascript API
+
+Another type of API
+google geocoding, taking an address making it longitude and latitude. 
+The reverse does the reverse. 
+
+There is a few execption. if you request an json file from another server:
+we need to do cross domain request. 
+example of use:
+
+$.ajax({
+	type:"GET",
+	url:"???",
+	dataType: "json",
+	success: processJSON
+});
+

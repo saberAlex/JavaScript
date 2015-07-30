@@ -69,11 +69,11 @@
 				 </div>
 	<div class="well"> 
 					 <form class="form-horizontal" role="form">
-					  <h4>{{'say hi to your ' + currentFighter.name}}</h4>
+					  <h4>{{currentChatMessage}}</h4>
 					   <div class="form-group" id="formSayHi">
-						<textarea class="form-control" placeholder="Update your status"></textarea>
+						<textarea class="form-control" ng-model='chatMessage'></textarea>
 						<hr>
-						<button class="btn btn-success pull-right" type="button">send</button>
+						<button class="btn btn-success pull-right" ng-click="sendChatMessage()" type="button">send</button>
 
 					  </div>
 					  

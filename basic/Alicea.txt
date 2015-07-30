@@ -1,0 +1,32 @@
+When we request a variable, it's do more that just look at the execution context. 
+Every execution context has a referent to the outer envirotment. 
+In the case of b.. it was sitting in the global... 
+
+function b() {
+	console.log(myVar);
+}
+
+function a() {
+	var myVar = 2;
+	b();
+}
+
+var myVar = 1;
+a(); //1
+
+Here, it will output 1 instead of 2.. because function b is sitting in the global environtment.
+b sits lexically in the top of the global environtment. 
+javascript it carries about it lexical envirotment... it will look at the outer level. 
+and the outer function is going to depend on where it lcated lexically. 
+and it will create an appropriate outer reference. 
+This is Scope chain event. 
+
+
+We can change the lexical environtment of b (inside a), like this:
+fucntion a() {
+	function b() {
+	 console.log(myVar);
+	}
+	var myVar = 2;
+	b();
+}

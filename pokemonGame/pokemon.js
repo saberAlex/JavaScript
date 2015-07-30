@@ -1,4 +1,4 @@
-var pokeFight = angular.module('pokeFight',['ngRoute']);
+var pokeFight = angular.module('pokeFight',['ngRoute', 'ngResource']);
 
 pokeFight.service('pokedexService', function() {
     var self = this;
@@ -71,9 +71,124 @@ pokeFight.config(function($routeProvider){
 });
 
 
-pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$interval', '$timeout', function($scope, $log, pokedexService, $interval, $timeout) {
+pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$interval', '$timeout', '$http', function($scope, $log, pokedexService, $interval, $timeout, $http) {
    
    $scope.currentFighter = pokedexService.currentFighter;
+   $scope.currentChatMessage = "say hi to your " + $scope.currentFighter.name;
+
+    //$log.info(hash);
+
+//
+
+//encodeURIComponent(JSON.stringify(object_to_be_serialised))
+//apiKey: iOU0FdljMQohKPvu
+//apiSecret: 1VW8Iwvj4GSTc5rwIYX6EuuGhdMLE0C8
+ 
+    $scope.chatMessage = "hi there";
+    $scope.sendChatMessage = function() {
+              var chatUrl = 'http://www.personalityforge.com/api/chat/';
+              var timestamp = Math.floor(Date.now() / 1000);
+                var message =   {
+          "message": {
+            "message": $scope.chatMessage,
+            "chatBotID": 110966,
+            "timestamp": timestamp
+          },
+          "user": {
+            "firstName": "Annez",
+            "lastName": "Lee",
+            "gender": "f",
+            "externalID": "abc-" + $scope.currentFighter.name
+          }
+
+}
+
+
+// <script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/hmac-sha256.js"></script>
+// <script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/components/enc-base64-min.js"></script>
+
+// <script>
+//   var hash = CryptoJS.HmacSHA256("Message", "secret");
+//   var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
+//   document.write(hashInBase64);
+// </script>
+
+// var encodeMsg = JSON.stringify(message);
+//           var hash = CryptoJS.HmacSHA256(encodeMsg,' 1VW8Iwvj4GSTc5rwIYX6EuuGhdMLE0C8');
+//             //var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
+//           var encodeToSend = encodeURIComponent(encodeMsg);
+//           var apiKey = 'iOU0FdljMQohKPvu';
+
+// chatUrl += "?apiKey="+apiKey + "&hash="+hash+"&message="+encodeToSend;
+// console.log(chatUrl);
+
+ var url ='http://www.personalityforge.com/api/chat/?apiKey=iOU0FdljMQohKPvu&chatBotID=110966&message=I+am+sorry+%3F&externalID=abc-639184572&firstName=Annez&lastName=Lee&gender=f';
+ // $scope.weatherAPI = $resource(url, { callback: "JSON_CALLBACK" }, { get: { method: "JSONP" }});
+ //    delete $http.defaults.headers.common['X-Requested-With'];
+ //     $scope.weatherResult = $scope.weatherAPI.get().toString();
+ //     $log.info('bummer');
+ //     $log.info($scope.weatherResult.toString());
+
+
+var req = {
+ method: 'GET',
+ callback: "JSON_CALLBACK",
+ headers: {
+   'Content-Type': undefined
+ },
+ responseType:'text'
+
+
+}
+
+$http.jsonp(url, req).success(function(data){console.log(data).error(function(data, status) {
+  console.log(data);
+          $scope.data = data || "Request failed";
+          $scope.status = status;
+      });
+});
+// $.ajax({
+//     url: url,
+//     dataType: 'JSONP',
+//     jsonpCallback: 'callback',
+//     type: 'GET',
+//     success: function (data) {
+//         console.log(data);
+//     },
+//         jsonp: 'jsonp'                                                                                                                                                
+// });
+
+
+// $http.jsonp(url)
+//     .success(function (data, status, headers, config) {
+//         alert("Hooray!");
+//         $log.info(data);
+//     })
+//     .error(function (data, status, headers, config) {
+//         alert("Dang It!");
+//                 $log.info(data.toString());
+
+//     });
+
+     }
+   
+
+
+      
+     //{ q: $scope.city, cnt: $scope.days }
+    
+    // $scope.convertToFahrenheit = function(degK) {
+        
+    //     return Math.round((1.8 * (degK - 273)) + 32);
+        
+    // }
+    
+    // $scope.convertToDate = function(dt) { 
+      
+    //     return new Date(dt * 1000);
+        
+    // };
+
    $scope.enemy = pokedexService.dummyOpponent;
    $scope.showGameOver = false;
    $scope.myHP =  Math.round($scope.currentFighter.hp/10) + '%';
