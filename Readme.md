@@ -10,3 +10,8 @@ This is resolved by changing the bower version:
 in the dependency package, it's mentioned:
     "bower": "^1.3.1"
 what I did: changing the version into "bower": "^1.3.6"
+
+
+This is to do with the pokemon game:
+Look at this link:
+http://pastebin.com/rqBxYVv0
