@@ -47,3 +47,5 @@ To use, just place theme.css after your bootstrap 3 css. This and other Bootstra
         </div>
     </script>
 	</div>
+
+	https://www.parse.com/docs/js/guide#fbusers
