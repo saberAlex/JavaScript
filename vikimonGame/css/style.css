@@ -30,6 +30,9 @@ h2 {
 
 #poke-image {
 	margin-top: 10%;
+	display: block;
+    margin-left: auto;
+    margin-right: auto
 }
 
 #formSayHi {
@@ -40,8 +43,11 @@ h2 {
 .displayedModal {
     display: block;
     margin-left: auto;
-    margin-right: auto }
+    margin-right: auto;
+     }
 
-#enemy-image {
-	width: 100px;
+
+#poke-main-image{
+	width: 260px;
+	height: 260px;
 }

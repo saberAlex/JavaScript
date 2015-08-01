@@ -14,22 +14,29 @@
         <script type="text/javascript" src="js/ui-bootstrap-tpls-0.13.1.min.js"></script>
     <script src="http://m-e-conroy.github.io/angular-dialog-service/javascripts/dialogs.min.js" type="text/javascript"></script>
                 <script src="pokemon.js"></script>
-                                <script src="pokeDirectives.js"></script>
+                <script src="pokeDirectives.js"></script>
 
 
 
     </head>
     
     <body >
-        
+            <audio id="access" src="sound/access_denied.wav" preload="auto"></audio>
+            <audio id="correct" src="sound/correct.wav" preload="auto"></audio>
+            <audio id="wrong" src="sound/wrong.wav" preload="auto"></audio>
+            <audio id="finish" src="sound/happyBday.wav" preload="auto"></audio>
+            <audio id='backsound' src="sound/backsound.mp3" preload="auto"></audio>
+            <script>
+                var audi = document.getElementById("backsound");
+                audi.loop = true;
+                audi.play();
+            </script>
 		<div class="navbar navbar-fixed-top header">
 		<div class="col-md-12">
 				<div class="collapse navbar-collapse" id="navbar-collapse2">
 				<a href="#" class="navbar-brand">vikiMads</a>
 				  <ul class="nav navbar-nav navbar-right">
 					 <li class="active"><a href="#">Arena</a></li>
-					 <li><a href="#loginModal" role="button" data-toggle="modal">Logout</a></li>
-					 <li><a href="#aboutModal" role="button" data-toggle="modal">About</a></li>
 				   </ul>
 				</div>	
 		 </div>	

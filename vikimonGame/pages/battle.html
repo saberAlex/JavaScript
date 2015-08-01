@@ -1,11 +1,11 @@
 	<!--main-->
-		<div class="container" id="main">
+		<div class="container" id="main" ng-show='gameStart'>
 		
 		   <div class="row">
 		   <div class="col-md-4 col-sm-6">
 
 				<div class="panel panel-default">
-				  <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>ability</h4></div>
+				  <div class="panel-heading"><h4>ability</h4></div>
 					<div class="panel-body">
 					  <div class="list-group" id="ability">
 						<a ng-click="toggleNormalModal()" class="btn btn-primary btn-block" class="list-group-item">vicky lullaby</a>
@@ -16,12 +16,16 @@
 				</div>
 
 					<div class="panel panel-default">
-				  <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>enemy</h4></div>
+				  <div class="panel-heading"><h4>enemy</h4></div>
 					<div class="panel-body">
 					  <div class="list-group">
 						<a href="" class="list-group-item active">{{enemy.name}}</a>
-						<a ng-click="toggleEnemyModal()" class="btn btn-success btn-block" class="list-group-item">status</a>
-						<a href="" class="list-group-item">info</a>
+						<br>
+						<p>health point</p>
+						<div class="progress">
+						<div class="progress-bar progress-bar-warning" ng-style="{'width': enemyHP}"></div>
+					  	</div>
+						<a ng-click="toggleEnemyModal()"class="btn btn-success btn-block" class="list-group-item">info</a>
 					  </div>
 					</div>
 				</div>
@@ -32,8 +36,8 @@
 				 
 
 				 <div class="panel panel-default">
-				   <div class="panel-heading"><a href="#" class="pull-right">View all</a> 
-				   	<h4>{{currentFighter.name + ' hp'}}</h4></div>
+				   <div class="panel-heading">
+				   	<h4>{{currentFighter.name + ' health point'}}</h4></div>
 					<div class="panel-body">
 					  <div class="progress">
 						<div class="progress-bar progress-bar-success" ng-style="{'width': myHP}"></div>
@@ -44,10 +48,10 @@
 
 
 				<div class="panel panel-default">
-				  <div class="panel-thumbnail"><img id='poke-image' ng-src="{{currentFighter.photo}}" class="img-responsive" ></div>
+				  <div class="panel-thumbnail"><img id='poke-image' ng-src="{{currentFighter.attack}}" class="img-responsive" ></div>
 				  <div class="panel-body">
 					<p class="lead">{{currentFighter.name}}</p>
-					<p>hello there master</p>
+					<p></p>
 					
 					<p>
 					
@@ -60,7 +64,7 @@
 			<div class="col-md-4 col-sm-6">
 				
 				<div class="panel panel-default">
-				   <div class="panel-heading"><a href="#" class="pull-right">View all</a> <h4>{{pokemon.name + 'pokedex'}}</h4></div>
+				   <div class="panel-heading"> <h4>Oh yeah, I am fabulous</h4></div>
 					<div class="panel-body">
 					  <img ng-src="{{currentFighter.normal}}"/> 
 					  <hr>			  
@@ -95,13 +99,14 @@
   	<br>
 	<p>Due to technical difficulties, you cannot choose other partner but Vicky. Vicky is a creature from a distant past. She is all about making a beautiful life! She likes to sing, sing, sing and sing and literally just singing and dancing. Regardless, vicky can also be a good friend and partner</p>
 	<br>
-	<p>Your task is to beat the other player partner using movements shown in the ability section. You can choose three different kind of moves. After you execute your moves, your opponent will attack you. You win if you manage to decrease your opponent HP to 0... So.. Click begin to play</p>
+	<p>Your task is to beat the other player partner using movements shown in the ability panel. You can choose three different kind of moves. After you execute your moves, your opponent will attack you. You win if you manage to decrease your opponent HP to 0... So.. Click begin to play</p>
 </info-modal>
 
 
+
   <modal title="charge!" visible="showModal">
-  	<img id='poke-image' ng-src="{{currentFighter.superAttack}}" class="img-responsive displayedModal" />
-    <h2 ng-style="{'color': 'red'}" >{{currentFighter.superPower * counter /10}}</h2>
+    <h2 ng-style="{'color': 'red'}" >{{'Vicky gets really mad!!' + enemy.moves}}</h2>
+  	<img id='poke-image' ng-src="{{enemy.movesPicture}}" class="img-responsive displayedModal" />
   <div class="progress">
 <div class="progress-bar progress-bar-info" ng-style="{'width': charging}"></div> </div>
 <h2>{{plus1 + '+' + plus2}}</h2>
@@ -112,29 +117,25 @@
   </modal>
 
 
-  <normal-attack-modal title="{{currentFighter.name + ' uses tackle'}}" visible="showNormalModal"> 
-    	<h2 ng-style="{'color': 'red'}" >{{currentFighter.power}}</h2>
-
-  	<img src="img/bar.gif"/>
-  	<img id='poke-image' ng-src="{{currentFighter.attack}}" class="img-responsive displayedModal" />
-
-
+  <normal-attack-modal title="Vicky is singing" visible="showNormalModal"> 
+    	<h4 ng-style="{'color': 'red'}" >{{'Vicky begins to sing... ' + enemy.moves}}</h4>
+  	  	<img id='poke-image' ng-src="{{enemy.movesPicture}}" class="img-responsive displayedModal" />
   </normal-attack-modal>
 
   <defense-modal title="{{currentFighter.name + ' defenses'}}" visible="showDefenseModal">
-  	<h2 ng-style="{'color': 'blue'}" >{{currentFighter.defense * 2}}</h2>
-  	<img src="img/bar.gif"/>
-  	<img id='poke-image' ng-src="{{currentFighter.def}}" class="img-responsive displayedModal" />
-
+  	<h4 ng-style="{'color': 'blue'}" >{{'Vicky stops attacking and rests... ' + enemy.moves}}</h4>
+  	<img id='poke-image' ng-src="{{enemy.movesPicture}}" class="img-responsive displayedModal" />
 </defense-modal>
 
 	<enemy-modal title="Opponent status" visible="showOpponent">
-	 <img id='enemy-image' ng-src="{{enemy.photo}}" class="img-responsive displayedModal" />
+	 <img ng-src="{{enemy.normal}}" class="img-responsive displayedModal" />
 	<br>
-	<h3>{{'HP: ' + enemy.hp}}</h3>
+	<h3>{{enemy.name}}</h3>
 	<br>
+	<p>{{enemy.info}}</p>
 	 </enemy-modal>
 
-<game-over title="Game Over" visible="showGameOver">
-	<h2> Game Over </h2>
+<game-over title="HAPPY BIRTHDAY VICKY!!!" visible="showGameOver">
+	<img src="img/gameOver.gif"/>
+	<h2> oh? you beat the game.. i dont care if you win or lose.. I hope you got a very good day!!</h2>
 </game-over> 

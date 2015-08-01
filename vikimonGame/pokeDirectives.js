@@ -1,4 +1,5 @@
 
+
 pokeFight.directive('modal', function () {
     return {
       templateUrl: "directives/modalSuper.html",
@@ -126,7 +127,7 @@ pokeFight.directive('enemyModal', function() {
 
 pokeFight.directive('gameOver', function() {
   return {
-    templateUrl: "directives/modalDefense.html",
+    templateUrl: "directives/modalGameOver.html",
     restrict:'E',
     transclude: true,
     replace: true,
@@ -150,7 +151,6 @@ pokeFight.directive('gameOver', function() {
           scope.$parent[attrs.visible] = false;
         });
       });
-
     }
   }
 });
@@ -181,7 +181,8 @@ pokeFight.directive('infoModal', function() {
           scope.$parent[attrs.visible] = false;
         });
       });
-
+      document.getElementById("backsound").play();
+      document.getElementById('access').play();
     }
   }
 })

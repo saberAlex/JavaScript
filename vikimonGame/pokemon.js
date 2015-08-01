@@ -28,9 +28,9 @@ pokeFight.service('pokedexService', function() {
     vicky: {
           name:"vicky",
           info:"When this CREATURE sings, it never pauses to breathe. that is to say, very annoying.",
-          photo:"img/vikimon/vikimon01.jpg",
-          normal:"img/vikimon/vikimon02.jpg",
           attack:"img/vikimon/vikimon01.jpg",
+          normal:"img/vikimon/vikimon02.jpg",
+          photo:"img/vikimon/vikimon03.jpg",
           def:"img/vikimon/vikimon01.jpg",
           superAttack:"img/vikimon/vikimon01.jpg",
           super: "Vicky gets really mad",
@@ -57,13 +57,8 @@ pokeFight.service('pokedexService', function() {
     }
   };
 
-  this.getRandomInt = function(min, max) {
-        return Math.floor(Math.random() * (max - min)) + min;
-  }
-
   this.currentFighter = this.allFighter.vicky;
-  var opponent = this.getRandomInt(1,2);
-  this.dummyOpponent = this.allFighter[this.fighterList[opponent]];
+  this.dummyOpponent = this.allFighter.pikachu;
 });
 
 pokeFight.config(function($routeProvider){
@@ -85,14 +80,27 @@ pokeFight.config(function($routeProvider){
 pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$interval', '$timeout', '$http', function($scope, $log, pokedexService, $interval, $timeout, $http) {
    
    $scope.currentFighter = pokedexService.currentFighter;
-   $scope.currentChatMessage = "say hi to your " + $scope.currentFighter.name;
+   $scope.currentChatMessage = "say hi to " + $scope.currentFighter.name;
    $scope.chatMessage = "hi there";
    $scope.enemy = pokedexService.dummyOpponent;
    $scope.showGameOver = false;
+
+   $scope.enemyHP =  Math.round($scope.enemy.hp/10) + '%';
+    $scope.$watch('enemy.hp', function() {
+       $scope.enemyHP =  Math.round($scope.enemy.hp/10) + '%';
+       if($scope.enemy.hp < 1) {
+          document.getElementById("backsound").pause();
+          document.getElementById('finish').play();
+          $scope.showGameOver = true;
+       }
+   });
+
    $scope.myHP =  Math.round($scope.currentFighter.hp/10) + '%';
    $scope.$watch('currentFighter.hp', function() {
    	   $scope.myHP =  Math.round($scope.currentFighter.hp/10) + '%';
        if($scope.currentFighter.hp < 1) {
+          document.getElementById("backsound").pause();
+          document.getElementById('finish').play();
           $scope.showGameOver = true;
        }
    });
@@ -102,16 +110,20 @@ pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$i
 
 
     $scope.showInfoModal = true;
+    $scope.gameStart = false;
+    $scope.beginGame = function() {
+      $scope.gameStart = true;
+      $scope.showInfoModal = false;
+    }
 
 
     $scope.showNormalModal = false;
     $scope.toggleNormalModal = function() {
       $scope.showNormalModal = !$scope.showNormalModal;
-      //simulating an opponent attack:
+      $scope.enemyAttack();
       $timeout( function() {
-         $scope.currentFighter.currentAttack = $scope.currentFighter.power;
+        $scope.currentFighter.currentAttack = $scope.currentFighter.power;
         $scope.currentFighter.currentDefense = 0;
-        $scope.enemyAttack();
         $scope.currentFighter.hp = $scope.currentFighter.hp - $scope.enemy.currentAttack + $scope.currentFighter.currentDefense;
         $scope.enemy.hp = $scope.enemy.hp - $scope.currentFighter.currentAttack + $scope.enemy.currentDefense;
               $scope.showNormalModal = !$scope.showNormalModal;
@@ -122,11 +134,10 @@ pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$i
     $scope.showDefenseModal = false;
     $scope.toggleDefenseModal = function() {
       $scope.showDefenseModal = !$scope.showDefenseModal;
-
+      $scope.enemyAttack();
       $timeout( function() {
         $scope.currentFighter.currentAttack = $scope.currentFighter.power;
-        $scope.currentFighter.currentDefense = 0;
-        $scope.enemyAttack();
+        $scope.currentFighter.currentDefense = $scope.currentFighter.defense*2;
         $scope.currentFighter.hp = $scope.currentFighter.hp - $scope.enemy.currentAttack + $scope.currentFighter.currentDefense;
         $scope.enemy.hp = $scope.enemy.hp - $scope.currentFighter.currentAttack + $scope.enemy.currentDefense;
         $scope.showDefenseModal = !$scope.showDefenseModal;
@@ -140,84 +151,105 @@ pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$i
       $scope.showOpponent = !$scope.showOpponent;
     }
 
-    $scope.currentFighter.currentAttack = 0;
-    $scope.currentFighter.currentDefense = 0;
-
-    $scope.enemy.currentAttack = 0;
-    $scope.enemy.currentDefense = 0;
-    $scope.enemyAttack = function() {
-        var chooseAttack = $scope.getRandomInt(1,4);
-        if(chooseAttack == 1) {
-          $scope.enemy.currentAttack = $scope.enemy.power;
-          $scope.enemy.currentDefense = 0;
-        } else if( chooseAttack == 2) {
-          $scope.enemy.currentAttack = 0;
-          $scope.enemy.currentDefense = $scope.enemy.defense*2;
-        } else {
-          $scope.enemy.currentAttack = $scope.getRandomInt(40,$scope.enemy.superPower);
-          $scope.enemy.currentDefense = 0;
-        }
-    }
-
-
-    //get random value, from min(included) to max(excluded)
-    $scope.getRandomInt = function(min, max) {
-        return Math.floor(Math.random() * (max - min)) + min;
-    }
 
     $scope.showModal = false;
     $scope.toggleModal = function(){
         $scope.showModal = !$scope.showModal;
+        $scope.enemyAttack();
         if($scope.showModal) {
     		var promise = $interval(function(){
     			$scope.countDown--;
     			if($scope.countDown < 1) {
-
-        $timeout( function() {
-        $scope.currentFighter.currentAttack = $scope.currentFighter.superPower*$scope.counter/10;
-        $scope.currentFighter.currentDefense = 0;
-        $scope.enemyAttack();
-        $scope.currentFighter.hp = $scope.currentFighter.hp - $scope.enemy.currentAttack + $scope.currentFighter.currentDefense;
-        $scope.enemy.hp = $scope.enemy.hp - $scope.currentFighter.currentAttack + $scope.enemy.currentDefense;
-      }, 3000);
-
-            $interval.cancel(promise);
-    				$scope.showModal = false;
+              $scope.currentFighter.currentAttack = $scope.currentFighter.superPower*$scope.counter/10;
+              $scope.currentFighter.currentDefense = 0;
+              $scope.currentFighter.hp = $scope.currentFighter.hp - $scope.enemy.currentAttack + $scope.currentFighter.currentDefense;
+              $scope.enemy.hp = $scope.enemy.hp - $scope.currentFighter.currentAttack 
+                              + $scope.enemy.currentDefense;
+                  $interval.cancel(promise);
+          				$scope.showModal = false;
     			}
     		},1000,0);
         $scope.currentFighter.answer = '';
-    	$scope.counter = 0;
-    	$scope.superAttackResult = 0;
-    	$scope.countDown = 10;
+      	$scope.counter = 0;
+      	$scope.superAttackResult = 0;
+      	$scope.countDown = 10;
     	}
 
     };
 
     //For the progress bar
-	$scope.charging = "0%";
+	  $scope.charging = "0%";
     $scope.$watch('counter', function() {
     	  $scope.charging = $scope.counter*10 + '%';
     });
 
-    $scope.plus1 = Math.floor((Math.random() * 15) + 1);
-	$scope.plus2 =  Math.floor((Math.random() * 15) + 1); 
+      $scope.plus1 = Math.floor((Math.random() * 15) + 1);
+	    $scope.plus2 =  Math.floor((Math.random() * 15) + 1); 
     $scope.submit = function() {
     	var result = $scope.plus1 + $scope.plus2;
     	if(result == parseInt($scope.currentFighter.answer) ) {
     		$scope.counter++;
-    	}
-    	$scope.currentFighter.answer = '';
+        document.getElementById('correct').play();
+    	} else {
+        document.getElementById('wrong').play();
+      }
+    	  $scope.currentFighter.answer = '';
         $scope.plus1 = Math.floor((Math.random() * 15) + 1);
-		$scope.plus2 =  Math.floor((Math.random() * 15) + 1); 	
+		    $scope.plus2 =  Math.floor((Math.random() * 15) + 1); 	
     }
 
+
+    $scope.currentFighter.currentAttack = 0;
+    $scope.currentFighter.currentDefense = 0;
+    $scope.enemy.currentAttack = 0;
+    $scope.enemy.currentDefense = 0;
+
+
+
+    $scope.enemyAttack = function() {
+        var chooseAttack = $scope.getRandomInt(1,4);
+        if(chooseAttack == 1) {
+          $scope.enemy.currentAttack = $scope.enemy.power;
+          $scope.enemy.currentDefense = 0;
+          $scope.enemy.moves = $scope.enemy.name + " gets annoyed and then " + $scope.enemy.name + ' uses tackle.';
+          $scope.enemy.movesPicture = $scope.enemy.attack;
+        } else if( chooseAttack == 2) {
+          $scope.enemy.currentAttack = 0;
+          $scope.enemy.currentDefense = $scope.enemy.defense*2;
+          $scope.enemy.moves = $scope.enemy.name + " takes a defensive stance.";
+          $scope.enemy.movesPicture = $scope.enemy.def;
+        } else {
+          $scope.enemy.currentAttack = $scope.getRandomInt(40,$scope.enemy.superPower);
+          $scope.enemy.currentDefense = 0;
+          $scope.enemy.moves = $scope.enemy.name + "  becomes afraid and then " + $scope.enemy.name + ' uses ' + $scope.enemy.super + '.';
+          $scope.enemy.movesPicture = $scope.enemy.superAttack;
+        }
+    }
+
+
+    $scope.getRandomInt = function(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+    $scope.done = function() {
+      $scope.showGameOver = false;
+    }
 }]);
 
 
 pokeFight.controller('mainController', ['$scope', '$log', 'pokedexService',  function($scope, $log, pokedexService) {
      $scope.allFighter = pokedexService.allFighter;
-     $scope.choose = function(poke) {
-     	pokedexService.currentFighter = pokedexService.fighter[poke];
-     };
-
+     function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+     }
+        var opponent = getRandomInt(1,5);
+        console.log(opponent);
+        if(opponent < 3) {
+          pokedexService.dummyOpponent = $scope.allFighter.charmander;
+        } else {
+          pokedexService.dummyOpponent = $scope.allFighter.pikachu;
+        }
+     pokedexService.currentFighter.hp = 1000;
+     pokedexService.dummyOpponent.hp = 1000;
 }]);
+

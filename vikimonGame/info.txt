@@ -1,0 +1,12 @@
+1.
+
+Vicky begins to sing... pikachu gets annoyed and then pikachu uses tackle. 
+Vicky gets really mad!! pikachu becomes afraid and then pikachu uses thunder bolt
+Vicky stops attacking and rests... pikachu takes a defensive stance 
+
+{{'Vicky begins to sing... ' + enemy.moves}}
+{{'Vicky gets really mad!!' + enemy.moves}}
+{{'Vicky stops attacking and rests... ' + enemy.moves}}
+
+
+style='background-image: url("https://fbcdn-dragon-a.akamaihd.net/hphotos-ak-xap1/t39.1997-6/p296x100/10333101_569221299857981_93673373_n.png"); background-size: 288px 288px; cursor: pointer; height: 120px; width: 120px; background-position: -12px -12px;'
