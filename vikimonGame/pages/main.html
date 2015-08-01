@@ -1,0 +1,15 @@
+		<div class="container" id="main">
+<br>
+<br>
+
+				<h1 style="font-family: 'Tillana', cursive"> choose your partner </h1>
+					<div class="row">
+					  <div class="col-xs-4" ng-repeat="fighter in allFighter">
+					  	<a href="#/battle" ng-click="choose(fighter.name)">
+					  		<img ng-src="{{fighter.photo}}"/>
+					  	</a>
+					  </div>
+					</div>
+
+				
+		</div>
