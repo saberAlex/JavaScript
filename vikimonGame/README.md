@@ -49,3 +49,8 @@ To use, just place theme.css after your bootstrap 3 css. This and other Bootstra
 	</div>
 
 	https://www.parse.com/docs/js/guide#fbusers
+
+Next task:
+	Adding sound effect
+	Adding vicky message (5 different string)
+	Searching for sound effect
