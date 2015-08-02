@@ -97,7 +97,7 @@ pokeFight.directive('defenseModal', function() {
 
 pokeFight.directive('enemyModal', function() {
   return {
-    templateUrl: "directives/modalDefense.html",
+    templateUrl: "directives/infoEnemy.html",
     restrict:'E',
     transclude: true,
     replace: true,
@@ -183,6 +183,7 @@ pokeFight.directive('infoModal', function() {
       });
       document.getElementById("backsound").play();
       document.getElementById('access').play();
+
     }
   }
 })

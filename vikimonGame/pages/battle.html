@@ -8,9 +8,9 @@
 				  <div class="panel-heading"><h4>ability</h4></div>
 					<div class="panel-body">
 					  <div class="list-group" id="ability">
-						<a ng-click="toggleNormalModal()" class="btn btn-primary btn-block" class="list-group-item">vicky lullaby</a>
-						<a ng-click="toggleDefenseModal()"class="btn btn-warning btn-block" class="list-group-item">vicky tries to run</a>
-						<a ng-click="toggleModal()" class="btn btn-danger btn-block" class="list-group-item">{{currentFighter.super}}</a>
+						<a ng-click="toggleNormalModal()" class="btn btn-primary btn-block" class="list-group-item">weak attack</a>
+						<a ng-click="toggleDefenseModal()"class="btn btn-warning btn-block" class="list-group-item">defense</a>
+						<a ng-click="toggleModal()" class="btn btn-danger btn-block" class="list-group-item">super attack</a>
 					  </div>
 					</div>
 				</div>
@@ -23,7 +23,7 @@
 						<br>
 						<p>health point</p>
 						<div class="progress">
-						<div class="progress-bar progress-bar-warning" ng-style="{'width': enemyHP}"></div>
+						<div id="enemyHPBar" class="progress-bar progress-bar-success" ng-style="{'width': enemyHP}"></div>
 					  	</div>
 						<a ng-click="toggleEnemyModal()"class="btn btn-success btn-block" class="list-group-item">info</a>
 					  </div>
@@ -40,7 +40,7 @@
 				   	<h4>{{currentFighter.name + ' health point'}}</h4></div>
 					<div class="panel-body">
 					  <div class="progress">
-						<div class="progress-bar progress-bar-success" ng-style="{'width': myHP}"></div>
+						<div class="progress-bar progress-bar-success" id="myHPBar" ng-style="{'width': myHP}"></div>
 					  </div>
 					  
 					</div>
@@ -92,10 +92,6 @@
 
 
 <info-modal title="We are sorry!!" visible="showInfoModal"> 
-	<br>
-	<img src="img/bar.gif"/>
-	<h4 style="color:red;margin: center;">now loading...</h4>
-  	<br>
   	<br>
 	<p>Due to technical difficulties, you cannot choose other partner but Vicky. Vicky is a creature from a distant past. She is all about making a beautiful life! She likes to sing, sing, sing and sing and literally just singing and dancing. Regardless, vicky can also be a good friend and partner</p>
 	<br>
@@ -105,7 +101,7 @@
 
 
   <modal title="charge!" visible="showModal">
-    <h2 ng-style="{'color': 'red'}" >{{'Vicky gets really mad!!' + enemy.moves}}</h2>
+    <h4 ng-style="{'color': 'red'}" >{{'Vicky gets really mad!!' + enemy.moves}}</h4>
   	<img id='poke-image' ng-src="{{enemy.movesPicture}}" class="img-responsive displayedModal" />
   <div class="progress">
 <div class="progress-bar progress-bar-info" ng-style="{'width': charging}"></div> </div>

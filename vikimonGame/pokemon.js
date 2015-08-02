@@ -36,7 +36,7 @@ pokeFight.service('pokedexService', function() {
           super: "Vicky gets really mad",
           hp: 1000,
           defense: 50,
-          power: 150,
+          power: 100,
           superPower: 500
         },
     pikachu: {
@@ -79,6 +79,22 @@ pokeFight.config(function($routeProvider){
 
 pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$interval', '$timeout', '$http', function($scope, $log, pokedexService, $interval, $timeout, $http) {
    
+
+
+   $scope.sendChatMessage = function() {
+       var chatMessage = [
+    "I am busy... I cannot talk to you right now!!",
+    "Oh please.. don't disturb me..",
+    "What? Who are you?",
+    "okay.. I bet you should stop talking..",
+    "stop.. okay..."
+   ];
+    $log.info($scope.getRandomInt(chatMessage.length));
+    var info = $scope.getRandomInt(0,chatMessage.length-1)
+    $scope.currentChatMessage = chatMessage[info];
+   }
+
+
    $scope.currentFighter = pokedexService.currentFighter;
    $scope.currentChatMessage = "say hi to " + $scope.currentFighter.name;
    $scope.chatMessage = "hi there";
@@ -88,7 +104,17 @@ pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$i
    $scope.enemyHP =  Math.round($scope.enemy.hp/10) + '%';
     $scope.$watch('enemy.hp', function() {
        $scope.enemyHP =  Math.round($scope.enemy.hp/10) + '%';
+       document.getElementById("damage").play();
+       if($scope.enemy.hp < 600 && $scope.enemy.hp >= 400) {
+        $('#enemyHPBar').removeClass( "progress-bar-success" ).addClass( "progress-bar-warning" );
+       } else if( $scope.enemy.hp <400) {
+        $('#enemyHPBar').removeClass( "progress-bar-warning" ).addClass( "progress-bar-danger" );        
+       } else {
+        $('#enemyHPBar').removeClass( "progress-bar-warning progress-bar-danger" ).addClass( "progress-bar-success" );
+       }
+
        if($scope.enemy.hp < 1) {
+                            document.getElementById("critical").pause();  
           document.getElementById("backsound").pause();
           document.getElementById('finish').play();
           $scope.showGameOver = true;
@@ -97,8 +123,23 @@ pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$i
 
    $scope.myHP =  Math.round($scope.currentFighter.hp/10) + '%';
    $scope.$watch('currentFighter.hp', function() {
+       if($scope.currentFighter.hp < 600 && $scope.currentFighter.hp >= 300) {
+        $('#myHPBar').removeClass( "progress-bar-success" ).addClass( "progress-bar-warning" );
+                    document.getElementById("critical").pause();  
+
+       } else if( $scope.currentFighter.hp <300) {
+        $('#myHPBar').removeClass( "progress-bar-warning" ).addClass( "progress-bar-danger" );  
+            document.getElementById("critical").play();  
+       } else {
+        $('#myHPBar').removeClass( "progress-bar-warning progress-bar-danger" ).addClass( "progress-bar-success" );
+                           document.getElementById("critical").pause();  
+
+       }
+
    	   $scope.myHP =  Math.round($scope.currentFighter.hp/10) + '%';
+              document.getElementById("damage").play();
        if($scope.currentFighter.hp < 1) {
+          document.getElementById("critical").pause();
           document.getElementById("backsound").pause();
           document.getElementById('finish').play();
           $scope.showGameOver = true;
@@ -120,6 +161,7 @@ pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$i
     $scope.showNormalModal = false;
     $scope.toggleNormalModal = function() {
       $scope.showNormalModal = !$scope.showNormalModal;
+      document.getElementById("vikising").play();
       $scope.enemyAttack();
       $timeout( function() {
         $scope.currentFighter.currentAttack = $scope.currentFighter.power;
@@ -136,7 +178,7 @@ pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$i
       $scope.showDefenseModal = !$scope.showDefenseModal;
       $scope.enemyAttack();
       $timeout( function() {
-        $scope.currentFighter.currentAttack = $scope.currentFighter.power;
+        $scope.currentFighter.currentAttack = 0;
         $scope.currentFighter.currentDefense = $scope.currentFighter.defense*2;
         $scope.currentFighter.hp = $scope.currentFighter.hp - $scope.enemy.currentAttack + $scope.currentFighter.currentDefense;
         $scope.enemy.hp = $scope.enemy.hp - $scope.currentFighter.currentAttack + $scope.enemy.currentDefense;
@@ -148,6 +190,11 @@ pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$i
 
     $scope.showOpponent = false;
     $scope.toggleEnemyModal = function() {
+          if($scope.enemy.name =="pikachu") {
+          document.getElementById("pikachu").play();
+        } else {
+          document.getElementById("char").play();
+        }
       $scope.showOpponent = !$scope.showOpponent;
     }
 
@@ -185,7 +232,7 @@ pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$i
 
       $scope.plus1 = Math.floor((Math.random() * 15) + 1);
 	    $scope.plus2 =  Math.floor((Math.random() * 15) + 1); 
-    $scope.submit = function() {
+      $scope.submit = function() {
     	var result = $scope.plus1 + $scope.plus2;
     	if(result == parseInt($scope.currentFighter.answer) ) {
     		$scope.counter++;
@@ -207,19 +254,35 @@ pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$i
 
 
     $scope.enemyAttack = function() {
+
         var chooseAttack = $scope.getRandomInt(1,4);
         if(chooseAttack == 1) {
+        if($scope.enemy.name =="pikachu") {
+          document.getElementById("pikachu").play();
+        } else {
+          document.getElementById("char").play();
+        }
           $scope.enemy.currentAttack = $scope.enemy.power;
           $scope.enemy.currentDefense = 0;
           $scope.enemy.moves = $scope.enemy.name + " gets annoyed and then " + $scope.enemy.name + ' uses tackle.';
           $scope.enemy.movesPicture = $scope.enemy.attack;
         } else if( chooseAttack == 2) {
+            if($scope.enemy.name =="pikachu") {
+          document.getElementById("pikachu").play();
+        } else {
+          document.getElementById("char").play();
+        }
           $scope.enemy.currentAttack = 0;
           $scope.enemy.currentDefense = $scope.enemy.defense*2;
           $scope.enemy.moves = $scope.enemy.name + " takes a defensive stance.";
           $scope.enemy.movesPicture = $scope.enemy.def;
         } else {
-          $scope.enemy.currentAttack = $scope.getRandomInt(40,$scope.enemy.superPower);
+            if($scope.enemy.name =="pikachu") {
+          document.getElementById("pikachu").play();
+        } else {
+          document.getElementById("charSuper").play();
+        }
+          $scope.enemy.currentAttack = $scope.getRandomInt(150,$scope.enemy.superPower);
           $scope.enemy.currentDefense = 0;
           $scope.enemy.moves = $scope.enemy.name + "  becomes afraid and then " + $scope.enemy.name + ' uses ' + $scope.enemy.super + '.';
           $scope.enemy.movesPicture = $scope.enemy.superAttack;
@@ -234,6 +297,7 @@ pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$i
     $scope.done = function() {
       $scope.showGameOver = false;
     }
+
 }]);
 
 
