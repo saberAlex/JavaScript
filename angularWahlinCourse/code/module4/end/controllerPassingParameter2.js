@@ -16,7 +16,9 @@
                 var foo = 'New Customer Added by Directive: vm.add()(name)';
 
                 //Call external scope's function
-                vm.add()(foo);
+                vm.add()(foo); //get reference to the external function.. 
+                //add ="addCustomer" --> this is passing a customer.. we need to invoked.
+                //get to the function and then invoke the function. Neat
 
                 //Add new item to directive scope
                 vm.items.push({

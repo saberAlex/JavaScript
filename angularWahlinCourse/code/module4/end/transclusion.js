@@ -38,3 +38,8 @@
     .directive('transclusion', transclusion);
 
 }());
+
+/*
+ The ng-repeat in that scenario is getting "tasks" from the higher level controller (directivesController.js) which isn't using controller as. That content is then "merged" into the directive. You'll find that particular controller in the "scripts" folder in the code download.
+
+*/

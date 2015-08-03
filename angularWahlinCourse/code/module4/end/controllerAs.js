@@ -33,6 +33,7 @@
           },
           controller: controller,
           controllerAs: 'vm',
+          //this is we need to send to true. (Very important)
           bindToController: true,
           template: template
       };

@@ -7,11 +7,13 @@
             status = null;
 
         function link(scope, elem, attrs) {
+          //this give the status and mapContainer can use the JQLite wrapper
            status = angular.element(document.getElementById('status'));
            mapContainer = angular.element(document.getElementById('map'));
 
            mapContainer.attr('style', 'height:' + scope.height +
                              'px;width:' + scope.width + 'px');
+           //this is the HTML5 to track your location, and the callback function is mapLocation and geoError.
            $window.navigator.geolocation.getCurrentPosition(mapLocation, geoError);
         }
 
@@ -27,7 +29,7 @@
                 mapTypeControl: true,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
               };
-
+              //this will take the mapContainer.. create a map in the div
               var map = new google.maps.Map(mapContainer[0], options);
 
               var marker = new google.maps.Marker({

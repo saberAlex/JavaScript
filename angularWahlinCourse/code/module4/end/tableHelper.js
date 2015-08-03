@@ -1,7 +1,7 @@
 (function() {
 
   var tableHelper = function () {
-
+    //With link we have 100% DOM
       var controller = ['$scope', function($scope) {
           var vm = this,
               visibleProps = [];

@@ -16,6 +16,9 @@
                 var name = 'New Customer Added by Directive: vm.add({name: name});';
 
                 //Call external scope's function
+                //add is the add customer.. bind to this function: 
+                //Example 1: <div controller-passing-parameter1 datasource="customers" add="addCustomer(name)"></div>
+                //another option... 
                 vm.add({name: name});
 
                 //Add new item to directive scope

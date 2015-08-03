@@ -23,3 +23,6 @@ look at ngModel.ngModelController
 Read about what is $modelValue and $viewValue
 
 $parse and $eval --> we need to convert the data that the user provide
+using $compile and $interpolate. 
+	{ compile: this is to accessing the raw template... and store it }
+	compile - pre-link (RARELY USED) - link/post-link
