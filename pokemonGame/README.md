@@ -49,3 +49,21 @@ To use, just place theme.css after your bootstrap 3 css. This and other Bootstra
 	</div>
 
 	https://www.parse.com/docs/js/guide#fbusers
+
+
+                  
+                            <div class="input-group">
+                                      <div class="checkbox">
+                                        <label>
+                                          <input id="login-remember" type="checkbox" name="remember" value="1"> Remember me
+                                        </label>
+                                      </div>
+                                    </div>
+
+
+<a href="">
+                                <div class="panel-footer">
+                                    <span class="pull-left">View Details</span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>

@@ -1,5 +1,6 @@
 var pokeFight = angular.module('pokeFight',['ngRoute', 'ngResource']);
 
+
 pokeFight.service('pokedexService', function() {
     var self = this;
 
@@ -67,12 +68,45 @@ pokeFight.config(function($routeProvider){
 		templateUrl: 'pages/battle.html',
 		controller: 'battleController'
 	})
+  .when('/login', {
+    templateUrl: 'pages/login.html',
+    controller: 'parsetodoController'
+  })
+  .when('/levelup', {
+    templateUrl: "pages/levelup.html",
+    controller: 'levelupController'
+  })
+  .otherwise({redirectTo: '/login'});
 
 });
 
+pokeFight.run( function($rootScope, $location) {
+  $rootScope.$on("$routeChangeStart", function(event, next, current) {
+    if($rootScope.isLogin == null) {
+        if ( next.templateUrl == "pages/login.html" ) {
+        } else {
+          $location.path( "/login" );
+        }
+    }
+  });
+});
 
-pokeFight.controller('battleController', ['$scope', '$log', 'pokedexService','$interval', '$timeout', '$http', function($scope, $log, pokedexService, $interval, $timeout, $http) {
-   
+
+
+pokeFight.controller('battleController', ['$scope','$rootScope', '$log', 'pokedexService','$interval', '$timeout', '$http', function($scope, $rootScope, $log, pokedexService, $interval, $timeout, $http) {
+    var currentUser = Parse.User.current();
+      if (currentUser) {
+    // do stuff with the user
+      alert("I'm logged in");
+      } else {
+    // show the signup or login page
+    alert("error");
+      }
+
+
+   if($rootScope.isLogin == undefined) {
+    $rootScope.isLogin = false;
+   }
    $scope.currentFighter = pokedexService.currentFighter;
    $scope.currentChatMessage = "say hi to your " + $scope.currentFighter.name;
    $scope.chatMessage = "hi there";
@@ -209,6 +243,17 @@ pokeFight.controller('mainController', ['$scope', '$log', 'pokedexService',  fun
      $scope.choose = function(poke) {
      	pokedexService.currentFighter = pokedexService.fighter[poke];
      };
+
+
+
+     var currentUser = Parse.User.current();
+      if (currentUser) {
+    // do stuff with the user
+      alert("I'm logged in");
+      } else {
+    // show the signup or login page
+    alert("error");
+      }
 
 }]);
 
