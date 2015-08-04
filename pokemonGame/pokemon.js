@@ -1,4 +1,4 @@
-var pokeFight = angular.module('pokeFight',['ngRoute', 'ngResource']);
+var pokeFight = angular.module('pokeFight',['ngRoute', 'ngResource','ngTagsInput']);
 
 
 pokeFight.service('pokedexService', function() {
@@ -94,15 +94,7 @@ pokeFight.run( function($rootScope, $location) {
 
 
 pokeFight.controller('battleController', ['$scope','$rootScope', '$log', 'pokedexService','$interval', '$timeout', '$http', function($scope, $rootScope, $log, pokedexService, $interval, $timeout, $http) {
-    var currentUser = Parse.User.current();
-      if (currentUser) {
-    // do stuff with the user
-      alert("I'm logged in");
-      } else {
-    // show the signup or login page
-    alert("error");
-      }
-
+ 
 
    if($rootScope.isLogin == undefined) {
     $rootScope.isLogin = false;

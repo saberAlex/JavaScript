@@ -21,6 +21,7 @@ h4{
 
 	font-family: 'Tillana', cursive;
 	font-weight: bolder;
+
 }
 
 h2 {
@@ -45,3 +46,9 @@ h2 {
 #enemy-image {
 	width: 100px;
 }
+
+.checklistButton{
+	margin-top: 1%;
+	margin-bottom: 1%;
+}
+

@@ -66,4 +66,19 @@ To use, just place theme.css after your bootstrap 3 css. This and other Bootstra
                                     <span class="pull-left">View Details</span>
                                     <div class="clearfix"></div>
                                 </div>
-                            </a>
+                            </a>0
+2   48  4,106   46,436  97,398  274,181 568,822 999,996 1,584,370   10
+3   102 4,058   46,388  97,350  274,133 568,774 999,948 1,584,322   58
+4   169 3,956   46,286  97,248  274,031 568,672 999,846 1,584,220   160
+5   245 3,787   46,117  97,079  273,862 568,503 999,677 1,584,051   329
+6   331 3,542   45,872  96,834  273,617 568,258 999,432 1,583,806   574
+7   425 3,211   45,541  96,503  273,286 567,927 999,101 1,583,475   905
+8   527 2,786   45,116  96,078  272,861 567,502 998,676 1,583,050   1,330
+9   636 2,259   44,589  95,551  272,334 566,975 998,149 1,582,523   1,857
+10  751 1,623   43,953  94,915  271,698 566,339 997,513 1,581,887   2,493
+
+leveling used this: http://bravefrontierglobal.wikia.com/wiki/Unit_Leveling
+    Parse.initialize("ItkXGdBwyClFKSuiD4wg87AyNYWikSl71qWzEsDJ", "Div8j4m44QXp8NhNJumpwh3qfxA3AwaWLmiqvDej");
+
+
+https://ItkXGdBwyClFKSuiD4wg87AyNYWikSl71qWzEsDJ:javascript-key=Div8j4m44QXp8NhNJumpwh3qfxA3AwaWLmiqvDej@api.parse.com/1/classes/LevelObject
