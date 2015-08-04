@@ -1,6 +1,4 @@
 <div class="container" id="main">
-                   <div class="row">
-
 <section>
                      <div class="col-lg-4 col-md-6">
                         <div class="panel panel-green">
@@ -9,7 +7,7 @@
                                     <div class="col-xs-3" >
                                     	<button type="button" class="btn btn-default btn-lg">
                                           <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-										</button>
+										                  </button>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge">{{user.username}}</div>
@@ -17,13 +15,13 @@
                                     </div>
                                 </div>
                             </div>
-                            					<div class="panel-body">
-                            					  <div class="progress">
-						<div class="progress-bar progress-bar-danger" ng-style="{'width': myHP}"></div> </div>
-					  </div>
+                            <div class="panel-body">
+                            		<div class="progress">
+						                          <div class="progress-bar progress-bar-danger" ng-style="{'width': myHP}"></div> 
+                                </div>
+					                  </div>
                         </div>
                     </div>
-	
                      <div class="col-lg-4 col-md-6">
                         <div class="panel panel-green">
                             <div class="panel-heading">
@@ -31,7 +29,7 @@
                                     <div class="col-xs-3" >
                                     	<button type="button" class="btn btn-default btn-lg" ng-click="openTodolist()">
                                           <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
-										</button>
+										                  </button>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge">{{user.taskList.length}}</div>
@@ -39,12 +37,12 @@
                                     </div>
                                 </div>
                             </div>
-                                                        					<div class="panel-body">
-                            <a ng-click="createTodo()" class="btn btn-success btn-block" class="list-group-item">
-                            	create new To-Do</a>  </div>
+                            <div class="panel-body">
+                                <a ng-click="createTodo()" class="btn btn-success btn-block" class="list-group-item">
+                            	create new To-Do</a>  
+                            </div>
                         </div>
                     </div>
-
                       <div class="col-lg-4 col-md-6">
                         <div class="panel panel-green">
                             <div class="panel-heading">
@@ -52,7 +50,7 @@
                                     <div class="col-xs-3" >
                                     	<button type="button" class="btn btn-default btn-lg">
                                           <span class="glyphicon glyphicon-tasks" aria-hidden="true"></span>
-										</button>
+										                  </button>
                                     </div>
                                     <div class="col-xs-9 text-right">
                                         <div class="huge">{{todo.total}}</div>
@@ -61,109 +59,89 @@
                                 </div>
                             </div>
                              <div class="panel-body ">
-                            <a ng-click="createDaily()" class="btn btn-warning btn-block" class="list-group-item">
+                              <a ng-click="createDaily()" class="btn btn-warning btn-block" class="list-group-item">
                             	create new Daily</a>  
                             </div>
                         </div>
                     </div>
 </section>
-<section ng-show="showNewTodo">
-                        <div class="col-lg-12 col-md-6">
-                        <div class="panel panel-green">
-                          <div class="panel-heading">
-                                
-                                <div class="row">
 
-                              <div  class="col-sm-4">
-                              <button type="button" class="btn btn-info checklistButton" ng-click="saveTask()">
-                                  <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"  ></span> add new task</button>
-                              <button type="button" class="btn btn-danger checklistButton" ng-click="createTodo()">
-                                  <span class="glyphicon glyphicon-trash" aria-hidden="true"  ></span> cancel task</button>
-                            </div>
-</div></div>
-                          <div class="panel-body">
-                              <form class="form-horizontal " method="get">
-                                  <div class="form-group">
-                                      <label class="col-sm-2 control-label">task</label>
+<section ng-show="showNewTodo">
+    <div class="col-lg-12 col-md-6">
+        <div class="panel">
+          <div class="panel-heading">
+            <div class="row">
+              <div  class="col-sm-4">
+                  <button type="button" class="btn btn-info checklistButton" ng-click="saveTask()">
+                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"  ></span> add new task
+                  </button>
+                  <button type="button" class="btn btn-danger checklistButton" ng-click="createTodo()">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"  ></span> cancel task
+                  </button>
+              </div>
+            </div>
+          </div>
+           <div class="panel-body">
+                <form class="form-horizontal " method="get">
+                     <div class="form-group">
+                           <label class="col-sm-2 control-label">task</label>
                                       <div class="col-sm-10">
                                           <input type="text" class="form-control" ng-model="taskInput">
                                       </div>
-                                  </div>
-                                  <div class="form-group">
-                                      <label class="col-sm-2 control-label">deadline</label>
+                      </div>
+                      <div class="form-group">
+                            <label class="col-sm-2 control-label">description</label>
+                                      <div class="col-sm-10">
+                                          <textarea class="form-control" ng-model="descriptions"></textarea>
+                                      </div>
+                      </div>
+                      <div class="form-group">
+                            <label class="col-sm-2 control-label">deadline</label>
                                       <div class="col-sm-10">
                                           <input type="date" min="{{today | date:'yyyy-MM-dd'}}" class="form-control" ng-model="dateInput">
                                       </div>
-                                  </div>
-
-                                  <div class="form-group">
-                                      <div class="col-sm-10">
-                                          <span class="help-block"> checklist panel</span>
-                                      </div>
-                                  </div>
-                              </form>
-                                <form ng-submit="addToModel()">
-                                      <label class="col-sm-2 control-label">add checklist</label>
-                                      <div class="col-sm-10">
-                                          <input type="text" class="form-control" ng-model="dataInput">
-                                      </div>   
-                                </form>
-
-                                  </div>      
-
-                             <div class="panel-body">
-                                  <div>
-                                            <span ng-repeat="(key,value) in checklist">
-                                   <button type="button" class="btn btn-info checklistButton" ng-click="deleteList(key)">
-                                  <span class="glyphicon glyphicon-remove" aria-hidden="true"  ></span> {{value}}</button></span>
-                                </div>                         
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                  </div>
-                 </section>
-
-
-
+                      </div>
+                </form>
+          </div>
+        </div>
+    </div> 
+</section>
 
 <section>
-            <div class="col-lg-3 col-md-6" ng-show="showTodolist">
-                        <div class="panel panel-green">
-                                      <div class="panel-body">
-    <div class="list-group" id="ability">
-      <a ng-repeat ="(key, value) in user.taskList" ng-click="showCurrentTask(key)" class="btn btn-info btn-block" class="list-group-item">{{value.todo}}</a>
-            </div>
-            <a ng-click="openTodolist()" class="btn btn-danger">
-              <span class="glyphicon glyphicon glyphicon-off" aria-hidden="true"> close</span></a>
-                            </div> <!--class=row-->
-
-                        </div>
-                    </div>
+  <div class="row">
   
-                     <div class="col-lg-9 col-md-6" ng-show="showTodo">
-                        <div class="panel panel-green">
-                            <div class="panel-heading">
-                                <div class="row">
-
-                              <h4>{{'Todo ID: ' + currentTodo.id}}</h4>
-                              <h5> {{ (currentTodo.complete)? "completed" : "incomplete"}}</h5>
+    <div class="col-lg-9 col-md-6" ng-show="showTodo">
+        <div class="panel">
+            <div class="panel-heading">
+                <div class="row">
+                    <h4>{{'Todo ID: ' + currentTodo.id}}</h4>
+                    <h5> {{ (currentTodo.complete)? "completed" : "incomplete"}}</h5>
                               <button type="button" class="btn btn-danger checklistButton" ng-click="">
-                                  <span class="glyphicon glyphicon-heart" aria-hidden="true"  ></span> Favorite</button>
-                                  <button type="button" class="btn btn-info checklistButton" ng-click="">
-                                  <span class="glyphicon glyphicon-pencil" aria-hidden="true"  ></span> Update</button>
-                                  <button type="button" class="btn btn-success checklistButton" ng-click="">
-                                  <span class="glyphicon glyphicon-ok" aria-hidden="true"  ></span> Complete</button>
-                                  <button type="button" class="btn btn-warning checklistButton" ng-click="">
-                                  <span class="glyphicon glyphicon-trash" aria-hidden="true"  ></span> Delete</button>
-
-                          <div class="panel-body">
+                                  <span class="glyphicon glyphicon-heart" aria-hidden="true"  ></span> Favorite
+                              </button>
+                              <button type="button" class="btn btn-info checklistButton" ng-click="updateTodoObject()">
+                                  <span class="glyphicon glyphicon-pencil" aria-hidden="true"  ></span> Update
+                              </button>
+                              <button type="button" class="btn btn-success checklistButton" ng-click="completeTodoObject()">
+                                  <span class="glyphicon glyphicon-ok" aria-hidden="true"  ></span> Complete
+                              </button>
+                              <button type="button" class="btn btn-warning checklistButton" ng-click="deleteTodoObject()">
+                                  <span class="glyphicon glyphicon-trash" aria-hidden="true"  ></span> Delete
+                              </button>
+                </div>
+            </div>
+            <div class="panel-body">
                               <form class="form-horizontal " method="get">
                                   <div class="form-group">
                                       <label class="col-sm-2 control-label">task</label>
                                       <div class="col-sm-10">
                                           <input type="text" class="form-control" ng-model="currentTodo.todo">
+                                      </div>
+                                  </div>
+                                     <div class="form-group">
+                                      <label class="col-sm-2 control-label">description</label>
+                                      <div class="col-sm-10">
+                                          <textarea type="text" class="form-control" ng-model="currentTodo.descriptions"></textarea>
                                       </div>
                                   </div>
                                   <div class="form-group">
@@ -172,49 +150,24 @@
                                           <input type="date" min="{{today | date:'yyyy-MM-dd'}}" class="form-control" ng-model="currentTodo.deadline">
                                       </div>
                                   </div>
-
-                                  <div class="form-group">
-                                      <div class="col-sm-10">
-                                          <span class="help-block">checklist</span>
-                                      </div>
-                                  </div>
                               </form>
-                                <form ng-submit="addToModel()">
-                                      <label class="col-sm-2 control-label"> more checklist</label>
-                                      <div class="col-sm-10">
-                                          <input type="text" class="form-control" ng-model="dataInput">
-                                      </div>   
-                                </form>
+           </div>      
+        </div>
+     </div>
+    <div class="col-lg-3 col-md-6" ng-show="showTodolist">
+        <div class="panel">
+            <div class="panel-body">
+              <div class="list-group" id="ability">
+                  <a ng-repeat ="(key, value) in user.taskList" ng-click="showCurrentTask(key)" class="btn btn-info btn-block" class="list-group-item">{{value._serverData.todo}}</a>
+              </div>
 
-                                  </div>      
+            <a ng-click="openTodolist()" class="btn btn-danger">
+              <span class="glyphicon glyphicon glyphicon-off" aria-hidden="true"> close</span>
+            </a>
+            </div> <!--class=row-->
+        </div>
+    </div>
 
-                                                                      <div class="panel-body">
-                                  <div>
-                                            <span ng-repeat="(key,value) in currentTodo.checklist">
-                                   <button type="button" class="btn btn-info checklistButton" ng-click="completeChecklist(key)">
-                                  <span class="glyphicon glyphicon-remove" aria-hidden="true"  ></span> {{value}}</button></span>
-                                </div>
-                                <div>
-                                            <span ng-repeat="(key,value) in currentTodo.checklistComplete">
-                                   <button type="button" class="btn btn-success checklistButton" ng-click="deleteComplete(key)">
-                                  <span class="glyphicon glyphicon-ok" aria-hidden="true"  ></span> {{value}}</button></span>
-                                </div>                              
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                  </div>
+   </div>
 </section>
-
-
-
-</div>
-</div>
-
-
-
-
-
-
 </div>

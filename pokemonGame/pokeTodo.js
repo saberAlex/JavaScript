@@ -1,4 +1,4 @@
-
+"use strict";
 pokeFight.controller('parsetodoController', ['$scope', '$log','$rootScope','$location', function($scope, $log, $rootScope, $location) {
 
 	Parse.initialize("ItkXGdBwyClFKSuiD4wg87AyNYWikSl71qWzEsDJ", "Div8j4m44QXp8NhNJumpwh3qfxA3AwaWLmiqvDej");
@@ -79,10 +79,11 @@ $scope.showTodolist = false;
 	var currentUser = Parse.User.current();
       if (currentUser) {
     	// do stuff with the user
+    	$rootScope.user = currentUser;
     	$scope.user = currentUser._serverData;
     	$scope.user.id = currentUser.id;
       	alert("I'm logged in");
-      	$log.info($scope.user);
+      	$log.info($rootScope.user);
       	//Object {username: "lucareto", email: "luciaagastya@gmail.com", Level: 1, EXP: 0, TotalEXP: 0}
       } else {
     // show the signup or login page
@@ -122,8 +123,10 @@ $scope.showTodolist = false;
 	//only find the first element:
 	query.first({
 		  success: function(result) {
+		   if(result) {
 		   $scope.currentLevelDetail = result._serverData;
-		   $log.info($scope.currentLevelDetail);
+			}
+		   //$log.info(result);
 		  },
 		  error: function(error) {
 		    alert("Error: " + error.code + " " + error.message);
@@ -140,8 +143,7 @@ $scope.showTodolist = false;
 		    alert("Successfully retrieved " + results.length + " scores.");
 		    // Do something with the returned Parse.Object values
 		    for (var i = 0; i < results.length; i++) {
-		    	var task = results[i]._serverData;
-		    	task.id = results[i].id;
+		    	var task = results[i];
 		    	$scope.user.taskList.push(task);
 		    }
 		    $log.info($scope.user.taskList);
@@ -156,31 +158,12 @@ $scope.showTodolist = false;
 	$scope.today =  Date.now();
 
 
-//For the task
-  $scope.checklist = [];
-  $scope.dataInput = "";
-  $scope.addToModel = function() {
-  	if($scope.checklist.length < 8) {
-  	$scope.checklist.push($scope.dataInput);
 
-  	} else {
-  		alert('unable to add more');
-  	}
-  	  	$log.info($scope.dataInput + " " + $scope.checklist.length);
-
-  	$scope.dataInput = "";
-  }
-  $scope.testVariable = "This is test";
-
-  $scope.deleteList = function( ind ) {
-
-	$scope.checklist.splice(ind, 1);
-	  $log.info($scope.dataInput + " " + $scope.checklist.length);
-
-}
-$scope.taskInput=''; $scope.dateInput;
+$scope.desc ="";
+$scope.taskInput="";
+$scope.dateInput;
 $scope.saveTask = function() {
-	if($scope.taskInput.length > 1) {
+	if($scope.taskInput) {
 		$log.info( $scope.taskInput + " " + $scope.dateInput);
 		var ToDosObject = Parse.Object.extend("ToDosObject");
 		var todo = new ToDosObject();
@@ -189,68 +172,76 @@ $scope.saveTask = function() {
 		todo.set("deadline", $scope.dateInput);
 		todo.set("failed", false);
 		todo.set("complete", false);
-		todo.set("checklist", $scope.checklist);
-		todo.set("checklistComplete", []);
+		todo.set("descriptions", $scope.descriptions);
 		todo.save( {
 			success: function(object) {
 				alert('Task saved');
-				var task = object._serverData;
-				task.id =object.id;
-				task.checklist = [];
-				while ($scope.checklist.length) {
-      			task.checklist.push($scope.checklist.pop());
-    			}
-				 $scope.checklist.slice(0);
-				$log.info(object._serverData);
-				$scope.user.taskList.push(task);
+				$scope.user.taskList.push(object);
 				$log.info("This is the newly created: ");
 				$log.info($scope.user.taskList[$scope.user.taskList.length-1]);
-				$log.info(task.checklist);
 			}, 
 			error: function(model, error) {
        			alert('Unable to save task');
        			$log.info(error);
       		}
 		});
-		cleanTask();
+	cleanTask();
 	}
 }
 
 var cleanTask = function() {
-	$scope.taskInput = '';
+	$scope.descriptions = "";
+	$scope.taskInput = "";;
 	$scope.dateInput = null;
-    while ($scope.checklist.length) {
-      $scope.checklist.pop();
-    }
 }
-
-$scope.currentTodo = {
-	id: '88888888',
-	userId: $scope.user.id,
-	todo: "",
-	deadline: null,
-	failed: false, 
-	complete: false,
-	checklist: [],
-	checklistComplete: []
-};
 
 $scope.showCurrentTask = function(key) {
 	$log.info($scope.user.taskList[key]);
-	$scope.currentTodo = $scope.user.taskList[key];
-	$scope.showTodo = true;
+	//retrieve:
+   $scope.currentObject = $scope.user.taskList[key];
+   $scope.currentTodo = $scope.currentObject._serverData;
+   $scope.currentTodo.id = $scope.currentObject.id;
+	$scope.currentTodo.key = key;
+	   $scope.showTodo = true;
+
 
 }
 //For the task
 
 $scope.deleteComplete = function( key ) {
 	$scope.currentTodo.checklistComplete.splice(key, 1);
+
 }
 
 $scope.completeChecklist = function(key) {
 	$scope.currentTodo.checklistComplete.push($scope.currentTodo.checklist[key]);
-		$scope.currentTodo.checklist.splice(key, 1);
+	$scope.currentTodo.checklist.splice(key, 1);
 }
 
+$scope.updateTodoObject = function() {
+	$scope.currentObject.set("todo", $scope.currentTodo.todo);
+	$scope.currentObject.set("deadline", $scope.currentTodo.deadline);
+		$scope.currentObject.set("descriptions", $scope.currentTodo.descriptions);
+	$scope.currentObject.save();
+	$scope.currentObject.updated = false;
+}
+
+$scope.deleteTodoObject = function() {
+    $scope.currentObject.destroy( {
+    	success: function() {
+    		$scope.currentTodo = null;
+    		}, 
+    	error: function() {
+    		alert("Unable to delete Object");
+    	}
+    });
+    $scope.user.taskList.splice($scope.currentTodo.key, 1);
+    $scope.showTodo = false;
+}
+
+$scope.completeTodoObject = function() {
+	$scope.currentObject.set("complete", true);
+	$scope.currentObject.save();
+}
 
 }]);
