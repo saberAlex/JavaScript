@@ -89,10 +89,34 @@ $scope.showTodolist = false;
     // show the signup or login page
     alert("error");
      }
+	$scope.currentLevelDetail = {}
+    retrieveCurrentLevel();
 
 	$scope.todo ={};
 	$scope.todo.total = 0;
+	$scope.$watch("user.EXP", function() {
+		$log.info($scope.user);
+		$log.info($scope.currentLevelDetail);
+			if($scope.user.EXP > $scope.currentLevelDetail.EXP) {
+				var diff = $scope.user.EXP - $scope.currentLevelDetail.EXP;
+				$rootScope.user.set("EXP", diff);
+				$rootScope.user.set("Level", $scope.user.Level+1);
+				$rootScope.user.set("TotalEXP", $scope.currentLevelDetail.TotalEXP+diff);
+				$rootScope.user.save({
+					success: function(currentUser) {
+						$rootScope.user = currentUser;
+    					$scope.user = currentUser._serverData;
+    					$scope.user.id = currentUser.id;
+    					retrieveCurrentLevel();
+					}
+				})
 
+			} else {
+				$rootScope.user.set("EXP", $scope.user.EXP);
+				$rootScope.user.save();
+				$scope.myHP =  Math.round($scope.user.EXP/$scope.currentLevelDetail.EXP) + '%';
+			}
+	});
 	
 	if($scope.user == null) {
 		$scope.user = {};
@@ -113,28 +137,31 @@ $scope.showTodolist = false;
 		//close everything if I close this:
 		$scope.showTodo = false;
 		$scope.showNewTodo = false;
-
-
 	}
+
 	//RETRIEVING LEVEL:
+	function retrieveCurrentLevel() {
 	var LevelObject = Parse.Object.extend("LevelObject");
 	var query = new Parse.Query(LevelObject);
 	query.equalTo("Level", $scope.user.Level);
 	//only find the first element:
 	query.first({
 		  success: function(result) {
-		   if(result) {
 		   $scope.currentLevelDetail = result._serverData;
-			}
-		   //$log.info(result);
+		   $scope.myHP =  Math.round($scope.user.EXP/$scope.currentLevelDetail.EXP) + '%';
+		   $log.info($scope.myHP + "My HP");
+
 		  },
 		  error: function(error) {
 		    alert("Error: " + error.code + " " + error.message);
 		  }
 	});
-
+	}
 	//Retrieving TASK
-	$scope.user.taskList = [];
+	$scope.user.currentTaskList = [];
+	$scope.user.completeTaskList = [];
+	$scope.user.failedTaskList = [];
+
 	var ToDosObject = Parse.Object.extend("ToDosObject");
 	var queryTask = new Parse.Query(ToDosObject);
 	queryTask.equalTo("userId", $scope.user.id);
@@ -143,10 +170,28 @@ $scope.showTodolist = false;
 		    alert("Successfully retrieved " + results.length + " scores.");
 		    // Do something with the returned Parse.Object values
 		    for (var i = 0; i < results.length; i++) {
+		    	if(results[i]._serverData.failed) {
+		    		$scope.user.failedTaskList.push(results[i]);
+		    	} else if(results[i]._serverData.complete) {
+		    			$scope.user.completeTaskList.push(results[i]);
+		    	} else {
 		    	var task = results[i];
-		    	$scope.user.taskList.push(task);
+		    	var currentTime = Date.now();
+		    	var diff = task._serverData.deadline - currentTime;
+		    	$log.info(diff);
+		    if (diff >0) {
+		    	$scope.user.currentTaskList.push(task);
+		    } else {
+		    	results[i].set("failed", true);
+		    	results[i].save( {
+		    		success: function(object) {
+		    			$scope.user.failedTaskList.push(object);
+		    		}
+		    	});
 		    }
-		    $log.info($scope.user.taskList);
+		    	}
+		    }
+		    $log.info($scope.user.currentTaskList);
 		  },
 		  error: function(error) {
 		    alert("Error: " + error.code + " " + error.message);
@@ -176,9 +221,9 @@ $scope.saveTask = function() {
 		todo.save( {
 			success: function(object) {
 				alert('Task saved');
-				$scope.user.taskList.push(object);
+				$scope.user.currentTaskList.push(object);
 				$log.info("This is the newly created: ");
-				$log.info($scope.user.taskList[$scope.user.taskList.length-1]);
+				$log.info($scope.user.currentTaskList[$scope.user.currentTaskList.length-1]);
 			}, 
 			error: function(model, error) {
        			alert('Unable to save task');
@@ -196,27 +241,41 @@ var cleanTask = function() {
 }
 
 $scope.showCurrentTask = function(key) {
-	$log.info($scope.user.taskList[key]);
+	$log.info($scope.user.currentTaskList[key]);
 	//retrieve:
-   $scope.currentObject = $scope.user.taskList[key];
+   $scope.currentObject = $scope.user.currentTaskList[key];
    $scope.currentTodo = $scope.currentObject._serverData;
    $scope.currentTodo.id = $scope.currentObject.id;
-	$scope.currentTodo.key = key;
-	   $scope.showTodo = true;
+   $scope.currentTodo.key = key;
+   $scope.showTodo = true;
+}
+
+$scope.showFailedTask = function(key) {
+$log.info($scope.user.failedTaskList[key]);
+	//retrieve:
+   $scope.currentObject = $scope.user.failedTaskList[key];
+   $scope.currentTodo = $scope.currentObject._serverData;
+   $scope.currentTodo.id = $scope.currentObject.id;
+   $scope.currentTodo.key = key;
+   $scope.showTodo = true;
+}
 
 
+$scope.showCompletedTaskView = false;
+$scope.showFailedTaskView = false;
+
+$scope.showCompletedTask = function(key) {
+$log.info($scope.user.completeTaskList[key]);
+	//retrieve:
+   $scope.currentObject = $scope.user.completeTaskList[key];
+   $scope.currentTodo = $scope.currentObject._serverData;
+   $scope.currentTodo.id = $scope.currentObject.id;
+   $scope.currentTodo.key = key;
+   $scope.showTodo = true;
 }
 //For the task
 
-$scope.deleteComplete = function( key ) {
-	$scope.currentTodo.checklistComplete.splice(key, 1);
 
-}
-
-$scope.completeChecklist = function(key) {
-	$scope.currentTodo.checklistComplete.push($scope.currentTodo.checklist[key]);
-	$scope.currentTodo.checklist.splice(key, 1);
-}
 
 $scope.updateTodoObject = function() {
 	$scope.currentObject.set("todo", $scope.currentTodo.todo);
@@ -235,13 +294,20 @@ $scope.deleteTodoObject = function() {
     		alert("Unable to delete Object");
     	}
     });
-    $scope.user.taskList.splice($scope.currentTodo.key, 1);
+    $scope.user.currentTaskList.splice($scope.currentTodo.key, 1);
     $scope.showTodo = false;
 }
 
 $scope.completeTodoObject = function() {
 	$scope.currentObject.set("complete", true);
-	$scope.currentObject.save();
+	$scope.user.currentTaskList.splice($scope.currentTodo.key, 1);
+	$scope.currentObject.save({
+		success: function(object) {
+			$scope.user.completeTaskList.push(object);
+			$scope.user.EXP += 6;
+			$log.info(object);
+		}
+	});
 }
 
 }]);
