@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="lastSummoner">
+<head>
+  <title>KO Tutorial</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.3.0/knockout-min.js"></script>
+  <style>
+  body {
+  	margin-top: 50px;
+  }
+  </style>
+</head>
+<body>
+
+<div class="container">
+<div id="bind01">
+	<p> First Name: <span data-bind="text: firstName"> Agastya </span></p>
+	<p> Last Name: <span data-bind="text: lastName"> Silvina </span></p>
+  <p>First name: <input data-bind="value: firstName" /></p>
+    <p> First Name: <strong data-bind="text: fullName"> Agastya </strong></p>
+<button data-bind="click: capitalizeLastName">Go caps</button>
+</div>
+
+<div class="col-md-5" id="bind02">
+<h2>Your seat reservations</h2>
+<h2>Your seat reservations (<span data-bind="text: seats().length"></span>)</h2>
+<table>
+    <thead><tr>
+        <th>Passenger name</th><th>Meal</th><th>Surcharge</th><th></th>
+    </tr></thead>
+    <!-- Todo: Generate table body -->
+    <!--tbody data-bind="foreach: seats">
+    <tr>
+        <td data-bind="text: name"></td>
+        <td data-bind="text: meal().mealName"></td>
+        <td data-bind="text: meal().price"></td>
+    </tr>    
+</tbody-->
+<tbody data-bind="foreach: seats">
+    <tr>
+        <td><input data-bind="value: name" /></td>
+        <td><select data-bind="options: $root.availableMeals, value: meal, optionsText: 'mealName'"></select></td>
+    <td data-bind="text: formattedPrice"></td>
+    <td><a href="#" data-bind="click: $root.removeSeat">Remove</a></td>
+    </tr>    
+</tbody>
+</table>
+<p>First name: <input data-bind="value: newName"/></p>
+<button data-bind="click: addSeat, enable: seats().length < 3">Reserve another seat</button>
+
+<h3 data-bind="visible: totalSurcharge() > 0">
+    Total surcharge: $<span data-bind="text: totalSurcharge().toFixed(2)"></span>
+</h3>
+
+</div>
+
+</div>
+
+
+
+<script type="text/javascript" src="app.js"></script>
+</body>
+</html>
